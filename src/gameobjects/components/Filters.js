@@ -327,9 +327,10 @@ if (typeof WEBGL_RENDERER)
             // because other calls to `addToRenderList` will happen in another camera.
             camera.addToRenderList(gameObject);
 
+            var filtersAutoFocus = gameObject.filtersAutoFocus;
             var filtersFocusContext = gameObject.filtersFocusContext;
 
-            if (gameObject.filtersAutoFocus)
+            if (filtersAutoFocus)
             {
                 if (filtersFocusContext)
                 {
@@ -343,6 +344,17 @@ if (typeof WEBGL_RENDERER)
 
             var filterCamera = gameObject.filterCamera;
             filterCamera.preRender();
+
+            if (filtersAutoFocus && filtersFocusContext)
+            {
+                var parent = gameObject.parentContainer;
+                if (parent)
+                {
+                    // Apply the game object's parent world transform to the filter camera.
+                    var parentWorldMatrix = parent.getWorldTransformMatrix();
+                    filterCamera.matrix.multiply(parentWorldMatrix);
+                }
+            }
 
             // Get transform.
             var transformMatrix = gameObject._filtersMatrix;
@@ -503,18 +515,6 @@ if (typeof WEBGL_RENDERER)
             var rotation = camera.rotation;
             var zoomX = camera.zoomX;
             var zoomY = camera.zoomY;
-
-            var parent = this.parentContainer;
-
-            if (parent)
-            {
-                var parentMatrix = parent.getWorldTransformMatrix();
-                posX -= parentMatrix.tx;
-                posY -= parentMatrix.ty;
-                rotation += parentMatrix.rotation;
-                zoomX *= parentMatrix.scaleX;
-                zoomY *= parentMatrix.scaleY;
-            }
 
             // Set the filter camera size to match the object.
             this.setFilterSize(width, height);
