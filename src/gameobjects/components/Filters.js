@@ -480,18 +480,20 @@ if (typeof WEBGL_RENDERER)
             var scaleX = this.scaleX;
             var scaleY = this.scaleY;
 
-            var centerX = posX + width * (0.5 - originX);
-            var centerY = posY + height * (0.5 - originY);
-
             // Handle flip.
             if (this.flipX)
             {
                 scaleX *= -1;
+                originX = 1 - originX;
             }
             if (this.flipY)
             {
                 scaleY *= -1;
+                originY = 1 - originY;
             }
+
+            var centerX = posX + width * (0.5 - originX);
+            var centerY = posY + height * (0.5 - originY);
 
             // Set the filter camera size to match the object.
             this.setFilterSize(width, height);
