@@ -116,10 +116,6 @@ var ContainerWebGLRenderer = function (renderer, container, drawingContext, pare
             currentContext.setBlendMode(child.blendMode);
             currentContext.use();
         }
-        else
-        {
-            currentContext = baseContext;
-        }
 
         //  Set parent values
         child.setScrollFactor(childScrollFactorX * scrollFactorX, childScrollFactorY * scrollFactorY);
