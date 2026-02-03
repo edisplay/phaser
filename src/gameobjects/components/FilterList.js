@@ -11,6 +11,7 @@ var Blocky = require('../../filters/Blocky');
 var Blur = require('../../filters/Blur');
 var Bokeh = require('../../filters/Bokeh');
 var ColorMatrix = require('../../filters/ColorMatrix');
+var CombineColorMatrix = require('../../filters/CombineColorMatrix');
 var Displacement = require('../../filters/Displacement');
 var Glow = require('../../filters/Glow');
 var ImageLight = require('../../filters/ImageLight');
@@ -360,6 +361,26 @@ var FilterList = new Class({
     addColorMatrix: function ()
     {
         return this.add(new ColorMatrix(this.camera));
+    },
+
+    /**
+     * Adds a Combine Color Matrix effect.
+     *
+     * This filter combines channels from two textures.
+     * There are many possibilities with this.
+     * However, a significant purpose is to manipulate alpha channels.
+     * Use `setupAlphaTransfer` to configure common options,
+     * or set the `colorMatrixSelf` and `colorMatrixTransfer` properties
+     * directly.
+     *
+     * @method Phaser.GameObjects.Components.FIlterList#addCombineColorMatrix
+     * @since 4.0.0
+     * @param {string | Phaser.Textures.Texture} [texture='__WHITE'] - The texture or texture key to use for the transfer texture.
+     * @returns
+     */
+    addCombineColorMatrix: function (texture)
+    {
+        return this.add(new CombineColorMatrix(this.camera, texture));
     },
 
     /**

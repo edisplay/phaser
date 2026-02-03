@@ -37,6 +37,7 @@ var RenderNodes = {
     FilterBlurMed: require('./filters/FilterBlurMed'),
     FilterBokeh: require('./filters/FilterBokeh'),
     FilterColorMatrix: require('./filters/FilterColorMatrix'),
+    FilterCombineColorMatrix: require('./filters/FilterCombineColorMatrix'),
     FilterDisplacement: require('./filters/FilterDisplacement'),
     FilterGlow: require('./filters/FilterGlow'),
     FilterImageLight: require('./filters/FilterImageLight'),

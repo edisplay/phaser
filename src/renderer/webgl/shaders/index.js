@@ -25,6 +25,7 @@ module.exports = {
     FilterBlurMedFrag: require('./FilterBlurMed-frag.js'),
     FilterBokehFrag: require('./FilterBokeh-frag.js'),
     FilterColorMatrixFrag: require('./FilterColorMatrix-frag.js'),
+    FilterCombineColorMatrixFrag: require('./FilterCombineColorMatrix-frag.js'),
     FilterDisplacementFrag: require('./FilterDisplacement-frag.js'),
     FilterGlowFrag: require('./FilterGlow-frag.js'),
     FilterImageLightFrag: require('./FilterImageLight-frag.js'),
