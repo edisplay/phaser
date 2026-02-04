@@ -50,6 +50,7 @@ var RenderNodes = {
     FilterSampler: require('./filters/FilterSampler'),
     FilterShadow: require('./filters/FilterShadow'),
     FilterThreshold: require('./filters/FilterThreshold'),
+    FilterVignette: require('./filters/FilterVignette'),
     FilterWipe: require('./filters/FilterWipe'),
 
     ListCompositor: require('./ListCompositor'),

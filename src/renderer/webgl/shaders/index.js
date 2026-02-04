@@ -36,6 +36,7 @@ module.exports = {
     FilterPixelateFrag: require('./FilterPixelate-frag.js'),
     FilterShadowFrag: require('./FilterShadow-frag.js'),
     FilterThresholdFrag: require('./FilterThreshold-frag.js'),
+    FilterVignetteFrag: require('./FilterVignette-frag.js'),
     FilterWipeFrag: require('./FilterWipe-frag.js'),
     FlatFrag: require('./Flat-frag.js'),
     FlatVert: require('./Flat-vert.js'),

@@ -24,6 +24,7 @@ var Pixelate = require('../../filters/Pixelate');
 var Sampler = require('../../filters/Sampler');
 var Shadow = require('../../filters/Shadow');
 var Threshold = require('../../filters/Threshold');
+var Vignette = require('../../filters/Vignette');
 var Wipe = require('../../filters/Wipe');
 
 /**
@@ -828,6 +829,35 @@ var FilterList = new Class({
             blurY,
             strength
         ));
+    },
+
+    /**
+     * Adds a Vignette effect.
+     *
+     * The vignette effect is a visual technique where the edges of the screen,
+     * or a Game Object, gradually darken or blur,
+     * creating a frame-like appearance. This effect is used to draw the player's
+     * focus towards the central action or subject, enhance immersion,
+     * and provide a cinematic or artistic quality to the game's visuals.
+     *
+     * This filter supports colored borders, and a limited set of blend modes,
+     * to increase its stylistic power.
+     *
+     * @method Phaser.GameObjects.Components.FilterList#addVignette
+     * @since 4.0.0
+     *
+     * @param {number} [x=0.5] - The horizontal offset of the vignette effect. This value is normalized to the range 0 to 1.
+     * @param {number} [y=0.5] - The vertical offset of the vignette effect. This value is normalized to the range 0 to 1.
+     * @param {number} [radius=0.5] - The radius of the vignette effect. This value is normalized to the range 0 to 1.
+     * @param {number} [strength=0.5] - The strength of the vignette effect.
+     * @param {number | string | Phaser.Types.Display.InputColorObject | Phaser.Display.Color} [color=0x000000] - The color of the vignette effect, as a hex code or Color object.
+     * @param {number} [blendMode=Phaser.BlendModes.NORMAL] - the blend mode to use with the vignette. Only NORMAL, ADD, MULTIPLY, and SCREEN are supported.
+     *
+     * @return {Phaser.Filters.Vignette} The new Vignette filter controller.
+     */
+    addVignette: function (x, y, radius, strength, color, blendMode)
+    {
+        return this.add(new Vignette(this.camera, x, y, radius, strength, color, blendMode));
     },
 
     /**
