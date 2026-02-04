@@ -9,6 +9,18 @@ var BaseFilterShader = require('./BaseFilterShader');
 
 var ShaderSourceFS = require('../../shaders/FilterNormalTools-frag.js');
 
+/**
+ * @classdesc
+ * This RenderNode renders the NormalTools filter effect.
+ * See {@link Phaser.Filters.NormalTools}.
+ *
+ * @class FilterNormalTools
+ * @extends Phaser.Renderer.WebGL.RenderNodes.BaseFilterShader
+ * @memberof Phaser.Renderer.WebGL.RenderNodes
+ * @constructor
+ * @since 4.0.0
+ * @param {Phaser.Renderer.WebGL.RenderNodes.RenderNodeManager} manager - The manager that owns this RenderNode.
+ */
 var FilterNormalTools = new Class({
     Extends: BaseFilterShader,
 
