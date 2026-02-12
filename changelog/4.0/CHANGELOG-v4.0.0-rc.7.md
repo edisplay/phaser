@@ -12,7 +12,27 @@
   - `ObjectToColor`
   - `RGBStringToColor`
   - `ValueToColor`
+- `Display.Color.Interpolate`: an extra interpolation mode is available.
+  - `HSVWithHSV`: new method to interpolate HSV values, in HSV space.
+  - `ColorWithColor` has new parameters to allow it to operate in HSV space.
+    - `hsv` flag sets it to operate in HSV space.
+    - `hsvSign` flag can force it to interpolate hue either ascending or descending. Default behavior picks the shortest angle.
+- `Display.ColorBand` describes a transition between two colors. Intended for use in gradients.
+- `Display.ColorRamp` describes a range of colors using ColorBands. Intended for use in gradients.
 - `GameObject#isDestroyed` flag helps you avoid errors when accessing an object that might have removed expected properties during destruction.
+- `GameObject.Gradient` is a new game object which renders gradients.
+  - Gradient shapes include:
+    - `LINEAR`
+    - `BILINEAR`
+    - `RADIAL`
+    - `CONIC_SYMMETRIC`
+    - `CONIC_ASYMMETRIC`
+  - Gradient repeat modes include:
+    - `EXTEND`: flat colors extend from start and end.
+    - `TRUNCATE`: transparency extends from start and end.
+    - `SAWTOOTH`: gradient starts over every time it completes.
+    - `TRIANGULAR`: gradient reverses direction every time it gets to the end or start.
+  - Optional Interleaved Gradient Noise based dithering to eliminate banding.
 - `Tint` is overhauled.
   - `tint` and `setTint()` now purely affect the color settings.
     - Previously, both would silently deactivate fill mode.

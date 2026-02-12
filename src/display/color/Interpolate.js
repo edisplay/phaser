@@ -6,6 +6,7 @@
 
 var Linear = require('../../math/Linear');
 var GetColor = require('./GetColor');
+var HSVToRGB = require('./HSVToRGB');
 
 /**
  * @namespace Phaser.Display.Color.Interpolate
@@ -51,6 +52,30 @@ var RGBWithRGB = function (r1, g1, b1, r2, g2, b2, length, index)
     };
 };
 
+var HSVWithHSV = function (h1, s1, v1, h2, s2, v2, length, index, sign)
+{
+    if (sign === undefined) { sign = 0; }
+    if (sign === 0)
+    {
+        // Nearest hue.
+        var dH = h1 - h2;
+        if (dH > 0.5) { h1 -= 1; }
+        else if (dH < -0.5) { h1 += 1; }
+    }
+    else if (sign > 0)
+    {
+        // Strictly increase hue.
+        if (h1 > h2) { h1 -= 1; }
+    }
+    else if (h1 < h2) { h1 += 1; } // Strictly decrease hue.
+
+    var t = index / length;
+    var h = Linear(h1, h2, t);
+    var s = Linear(s1, s2, t);
+    var v = Linear(v1, v2, t);
+    return HSVToRGB(h, s, v);
+};
+
 /**
  * Interpolates between the two given color objects over the length supplied.
  *
@@ -63,13 +88,20 @@ var RGBWithRGB = function (r1, g1, b1, r2, g2, b2, length, index)
  * @param {Phaser.Display.Color} color2 - The second Color object.
  * @param {number} [length=100] - Distance to interpolate over.
  * @param {number} [index=0] - Index to start from.
+ * @param {boolean} [hsv=false] - Whether to interpolate in HSV.
+ * @param {number} [hsvSign=0] - Preferred direction for HSV interpolation. 0 is nearest, negative always decreases hue, positive always increases hue.
  *
  * @return {Phaser.Types.Display.ColorObject} An object containing the interpolated color values.
  */
-var ColorWithColor = function (color1, color2, length, index)
+var ColorWithColor = function (color1, color2, length, index, hsv, hsvSign)
 {
     if (length === undefined) { length = 100; }
     if (index === undefined) { index = 0; }
+
+    if (hsv)
+    {
+        return HSVWithHSV(color1.h, color1.s, color1.v, color2.h, color2.s, color2.v, length, index, hsvSign);
+    }
 
     return RGBWithRGB(color1.r, color1.g, color1.b, color2.r, color2.g, color2.b, length, index);
 };
@@ -102,6 +134,7 @@ var ColorWithRGB = function (color, r, g, b, length, index)
 module.exports = {
 
     RGBWithRGB: RGBWithRGB,
+    HSVWithHSV: HSVWithHSV,
     ColorWithRGB: ColorWithRGB,
     ColorWithColor: ColorWithColor
 

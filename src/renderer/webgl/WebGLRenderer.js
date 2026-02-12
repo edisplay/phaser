@@ -890,12 +890,9 @@ var WebGLRenderer = new Class({
 
         this.vaoExtension = (exts.indexOf(vaoString) > -1) ? gl.getExtension(vaoString) : null;
 
-        if (game.config.smoothPixelArt)
-        {
-            var stdDerivativesString = 'OES_standard_derivatives';
+        var stdDerivativesString = 'OES_standard_derivatives';
 
-            this.standardDerivativesExtension = (exts.indexOf(stdDerivativesString) > -1) ? gl.getExtension(stdDerivativesString) : null;
-        }
+        this.standardDerivativesExtension = (exts.indexOf(stdDerivativesString) > -1) ? gl.getExtension(stdDerivativesString) : null;
 
         // Make WebGL2 core features which were extensions available on the WebGL1 context.
         // This allows us to use a WebGL2 context.

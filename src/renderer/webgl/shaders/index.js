@@ -43,6 +43,7 @@ module.exports = {
     GetNormalFromMap: require('./GetNormalFromMap-glsl.js'),
     GetTexRes: require('./GetTexRes-glsl.js'),
     GetTexture: require('./GetTexture-glsl.js'),
+    GradientFrag: require('./Gradient-frag.js'),
     MultiFrag: require('./Multi-frag.js'),
     MultiVert: require('./Multi-vert.js'),
     OutInverseRotation: require('./OutInverseRotation-glsl.js'),
