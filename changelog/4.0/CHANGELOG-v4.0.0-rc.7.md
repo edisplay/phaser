@@ -3,6 +3,7 @@
 ## New Features
 
 - `Actions.AddEffectBloom` allows you to quickly set up a bloom effect, using several filters, on a target Camera or GameObject.
+- `Actions.AddEffectShine` allows you to quickly set up a shine effect, using a new Gradient and filters, on a target Camera or GameObject.
 - `Actions.AddMaskShape` allows you to quickly add shapes to a target Camera or GameObject as Masks. Blurred edges and inversion are supported.
 - `Actions.FitToRegion` transforms an object to fit a region, such as the screen.
 - `Display.Color`: several helper methods now support modifying an existing `Color` object instead of creating a new one.

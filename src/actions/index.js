@@ -11,6 +11,7 @@
 module.exports = {
 
     AddEffectBloom: require('./AddEffectBloom'),
+    AddEffectShine: require('./AddEffectShine'),
     AddMaskShape: require('./AddMaskShape'),
     AlignTo: require('./AlignTo'),
     Angle: require('./Angle'),
