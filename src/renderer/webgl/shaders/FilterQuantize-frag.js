@@ -55,7 +55,7 @@ module.exports = [
     '}',
     'vec4 ditherIGN(vec4 value)',
     '{',
-    '    value += (mod(52.9829189 * mod(0.06711056 * gl_FragCoord.x + 0.00583715 * gl_FragCoord.y, 1.0), 1.0) - 0.5);',
+    '    value += fract(52.9829189 * fract(0.06711056 * gl_FragCoord.x + 0.00583715 * gl_FragCoord.y)) - 0.5;',
     '    return value;',
     '}',
     'void main ()',
