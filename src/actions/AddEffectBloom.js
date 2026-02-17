@@ -33,6 +33,13 @@ var BlendModes = require('../renderer/BlendModes');
  * - `parallelFilters.active = false`: deactivate Bloom
  * - `parallelFilters.destroy()`: destroy Bloom
  *
+ * Bloom is best as a full-screen effect. If you apply it to a GameObject with
+ * alpha regions, it cannot blend the light glow properly with the background.
+ * This is because the glow should use ADD blend, but the object itself should
+ * use NORMAL blend, and it can't do both.
+ * You can still apply bloom to a GameObject,
+ * but it works best on a solid texture.
+ *
  * @example
  * // Apply bloom to the scene camera.
  * Phaser.Actions.AddEffectBloom(this.cameras.main);
