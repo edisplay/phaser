@@ -35,6 +35,11 @@
     - `TRIANGULAR`: gradient reverses direction every time it gets to the end or start.
   - Optional Interleaved Gradient Noise based dithering to eliminate banding.
 - `GameObjects.NineSlice` has two new parameters: `tileX`, `tileY`, which allow non-corner regions of the NineSlice to tile instead of stretch. Some stretching is still applied to keep the tile count a whole number. Thanks to @skhoroshavin for this contribution!
+- Cellular noise objects: `GameObjects.NoiseCell2D`, `NoiseCell3D` and `NoiseCell4D` provide cellular/Worley/Voronoi noise.
+  - Render cellular noise with sharp or smooth edges, or random flat colors.
+  - Smoothly animate scroll through the XY plane or evolve the pattern through Z or ZW axes.
+  - Add octaves of detail.
+  - Supports rendering as a texture or normal map for use in other effects.
 - `Tint` is overhauled.
   - `tint` and `setTint()` now purely affect the color settings.
     - Previously, both would silently deactivate fill mode.
