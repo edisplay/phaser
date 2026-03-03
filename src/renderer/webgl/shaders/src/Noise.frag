@@ -1,0 +1,29 @@
+// NOISE_WORLEY_2D
+#version 100
+#pragma phaserTemplate(shaderName)
+
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+
+uniform vec2 uOffset;
+uniform vec4 uColorStart;
+uniform vec4 uColorEnd;
+uniform float uPower;
+
+varying vec2 outTexCoord;
+
+float trig(vec2 p)
+{
+    return fract(43757.5453*sin(dot(p, vec2(12.9898,78.233))));
+}
+
+void main ()
+{
+    float value = pow(trig(outTexCoord + uOffset), uPower);
+    vec4 color = mix(uColorStart, uColorEnd, value);
+    color.rgb *= color.a;
+    gl_FragColor = color;
+}

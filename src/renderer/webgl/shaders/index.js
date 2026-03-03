@@ -48,6 +48,8 @@ module.exports = {
     GradientFrag: require('./Gradient-frag.js'),
     MultiFrag: require('./Multi-frag.js'),
     MultiVert: require('./Multi-vert.js'),
+    NoiseFrag: require('./Noise-frag.js'),
+    NoiseWorleyFrag: require('./NoiseWorley-frag.js'),
     NoiseWorley2DFrag: require('./NoiseWorley2D-frag.js'),
     NoiseWorley3DFrag: require('./NoiseWorley3D-frag.js'),
     NoiseWorley4DFrag: require('./NoiseWorley4D-frag.js'),
