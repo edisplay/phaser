@@ -38,6 +38,14 @@
  * You might compute a thousand or so hashes per millisecond,
  * depending on device and workload.
  *
+ * Note: If you specify dimensional properties in the config parameter,
+ * ensure they are at least as long as the input vector.
+ * Missing values can corrupt the result.
+ *
+ * Disclaimer: This function is intended for efficiently generating visual
+ * variety. It is not intended for cryptographic use. Do not use it for
+ * security/authentication/encryption purposes. Use a proper tool instead.
+ *
  * @example
  * // Create a smoothly shifting field of points.
  * // Use noiseSeed to get different outputs from the same inputs.
