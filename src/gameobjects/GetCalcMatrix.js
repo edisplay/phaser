@@ -22,7 +22,7 @@ var result = {
  * Calculates the Transform Matrix of the given Game Object and Camera, factoring in
  * the parent matrix if provided.
  *
- * Note that the object this results contains _references_ to the Transform Matrices,
+ * Note that the object this result contains _references_ to the Transform Matrices,
  * not new instances of them. Therefore, you should use their values immediately, or
  * copy them to your own matrix, as they will be replaced as soon as another Game
  * Object is rendered.
