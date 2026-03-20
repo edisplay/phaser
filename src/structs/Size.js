@@ -568,7 +568,7 @@ var Size = new Class({
      * @method Phaser.Structs.Size#setWidth
      * @since 3.16.0
      *
-     * @param {number} width - The new width of the Size component.
+     * @param {number} value - The new width of the Size component.
      *
      * @return {this} This Size component instance.
      */
@@ -585,7 +585,7 @@ var Size = new Class({
      * @method Phaser.Structs.Size#setHeight
      * @since 3.16.0
      *
-     * @param {number} height - The new height of the Size component.
+     * @param {number} value - The new height of the Size component.
      *
      * @return {this} This Size component instance.
      */
