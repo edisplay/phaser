@@ -160,7 +160,7 @@ var NoiseCell2D = new Class({
          *
          * @name Phaser.GameObjects.NoiseCell2D#noiseOffset
          * @type {number[]}
-         * @default [ 0, 0, 0 ]
+         * @default [ 0, 0 ]
          * @since 4.0.0
          */
         this.noiseOffset = [ 0, 0 ];
@@ -181,7 +181,7 @@ var NoiseCell2D = new Class({
          *
          * @name Phaser.GameObjects.NoiseCell2D#noiseVariation
          * @type {number[]}
-         * @default [ 1, 1, 1 ]
+         * @default [ 1, 1 ]
          * @since 4.0.0
          */
         this.noiseVariation = [ 1, 1 ];
