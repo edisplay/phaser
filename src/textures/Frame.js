@@ -524,7 +524,7 @@ var Frame = new Class({
      * Takes a crop data object and, based on the rectangular region given, calculates the
      * required UV coordinates in order to crop this Frame for WebGL and Canvas rendering.
      *
-     * The crop size as well as coordinates can not exceed the the size of the frame.
+     * The crop size as well as coordinates can not exceed the size of the frame.
      * 
      * This is called directly by the Game Object Texture Components `setCrop` method.
      * Please use that method to crop a Game Object.
@@ -816,7 +816,7 @@ var Frame = new Class({
     },
 
     /**
-     * Destroys this Frame by nulling its reference to the parent Texture and and data objects.
+     * Destroys this Frame by nulling its reference to the parent Texture and data objects.
      *
      * @method Phaser.Textures.Frame#destroy
      * @since 3.0.0
