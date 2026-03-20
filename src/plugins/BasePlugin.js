@@ -26,7 +26,7 @@ var BasePlugin = new Class({
     {
         /**
          * A handy reference to the Plugin Manager that is responsible for this plugin.
-         * Can be used as a route to gain access to game systems and  events.
+         * Can be used as a route to gain access to game systems and events.
          *
          * @name Phaser.Plugins.BasePlugin#pluginManager
          * @type {Phaser.Plugins.PluginManager}
