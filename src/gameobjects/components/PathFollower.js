@@ -44,7 +44,7 @@ var PathFollower = {
      * this value is added to the rotation value. This allows you to rotate objects to a path but control
      * the angle of the rotation as well.
      *
-     * @name Phaser.GameObjects.PathFollower#pathRotationOffset
+     * @name Phaser.GameObjects.Components.PathFollower#pathRotationOffset
      * @type {number}
      * @default 0
      * @since 3.0.0
