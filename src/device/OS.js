@@ -136,7 +136,7 @@ function init ()
         OS.desktop = true;
     }
 
-    //  Windows Phone / Table reset
+    //  Windows Phone / Tablet reset
     if (OS.windowsPhone || (((/Windows NT/i).test(ua)) && ((/Touch/i).test(ua))))
     {
         OS.desktop = false;
