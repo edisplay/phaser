@@ -460,7 +460,7 @@ var ColorRamp = new Class({
      *
      * If there is no band at that location, the color is transparent.
      *
-     * @method Phaser.Display>ColorRamp#getColor
+     * @method Phaser.Display.ColorRamp#getColor
      * @param {number} index - Index of the color to get, from 0 (start) to 1 (end).
      * @returns {Phaser.Types.Display.ColorObject} The color at that index.
      */
