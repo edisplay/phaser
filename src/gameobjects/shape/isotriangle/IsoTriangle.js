@@ -65,7 +65,7 @@ var IsoTriangle = new Class({
         Shape.call(this, scene, 'IsoTriangle', null);
 
         /**
-         * The projection level of the iso box. Change this to change the 'angle' at which you are looking at the box.
+         * The projection level of the iso triangle. Change this to change the 'angle' at which you are looking at the box.
          *
          * @name Phaser.GameObjects.IsoTriangle#projection
          * @type {number}
