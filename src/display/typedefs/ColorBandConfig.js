@@ -3,7 +3,7 @@
  * @since 4.0.0
  *
  * @property {number | string | number[] | Color} [colorStart=0x000000] - The color at the start of the band. Specify a color integer, hex string, array of RGB or RGBA in range 0-1, or a color.
- * @property {number | string | number[] | Color} [colorEnd] - The color at the start of the band. Defaults to `colorStart`.
+ * @property {number | string | number[] | Color} [colorEnd] - The color at the end of the band. Defaults to `colorStart`.
  * @property {number} [start=0] - The start point of this band within a ColorRamp. This value should be normalized within the ramp, between 0 (ramp start) and 1 (ramp end).
  * @property {number} [middle=0.5] - The middle point of this band within a ColorRamp. This value should be normalized within the band, between 0 (band start) and 1 (band end). Middle point alters the shape of the color interpolation.
  * @property {number} [end=1] - The end point of this band within a ColorRamp. This value should be normalized within the ramp, between 0 (ramp start) and 1 (ramp end).
