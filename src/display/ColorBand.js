@@ -72,7 +72,7 @@ var ColorBand = new Class({
          * between 0 (ramp start) and 1 (ramp end).
          *
          * @name Phaser.Display.ColorBand#start
-         * @type {Phaser.Display.Color}
+         * @type {number}
          * @since 4.0.0
          */
         this.start = config.start || 0;
@@ -90,7 +90,7 @@ var ColorBand = new Class({
          * `gamma = log base middle of 0.5`.
          *
          * @name Phaser.Display.ColorBand#middle
-         * @type {Phaser.Display.Color}
+         * @type {number}
          * @since 4.0.0
          */
         this.middle = (config.middle === undefined) ? 0.5 : config.middle;
@@ -101,7 +101,7 @@ var ColorBand = new Class({
          * between 0 (ramp start) and 1 (ramp end).
          *
          * @name Phaser.Display.ColorBand#end
-         * @type {Phaser.Display.Color}
+         * @type {number}
          * @since 4.0.0
          */
         this.end = 1;
