@@ -387,7 +387,7 @@ var Game = new Class({
      *
      * @method Phaser.Game#texturesReady
      * @private
-     * @fires Phaser.Game#READY
+     * @fires Phaser.Core.Events#READY
      * @since 3.12.0
      */
     texturesReady: function ()
@@ -513,8 +513,8 @@ var Game = new Class({
      * This process emits `prerender` and `postrender` events, even though nothing actually displays.
      *
      * @method Phaser.Game#headlessStep
-     * @fires Phaser.Game#PRE_RENDER
-     * @fires Phaser.Game#POST_RENDER
+     * @fires Phaser.Core.Events#PRE_RENDER
+     * @fires Phaser.Core.Events#POST_RENDER
      * @since 3.2.0
      *
      * @param {number} time - The current time. Either a High Resolution Timer value if it comes from Request Animation Frame, or Date.now if using SetTimeout.
