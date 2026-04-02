@@ -51,6 +51,20 @@ var BlendModes = require('../renderer/BlendModes');
  * // Destroy the bloom effect.
  * parallelFilters.destroy();
  *
+ * @example
+ * // Emulate the Phaser 3 Bloom effect,
+ * // including the way bloom strength darkens instead of mixes.
+ * const { parallelFilters, threshold, blur } = Phaser.Actions.AddEffectBloom(
+ *     image,
+ *     {
+ *         blendAmount: 0.5,
+ *         blurQuality: 1,
+ *     }
+ * );
+ *
+ * threshold.active = false;
+ * parallelFilters.bottom.addBlend(undefined, Phaser.BlendModes.MULTIPLY, 1, [ 0. * 5, 0.5, 0.5, 0.5 ]);
+ *
  * @function Phaser.Actions.AddEffectBloom
  * @since 4.0.0
  *

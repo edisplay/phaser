@@ -374,7 +374,7 @@ cm.colorMatrix.contrast(0.3);
 
 10. **Mask game object rendering** -- When using a game object as a mask source, it is rendered to a DynamicTexture each frame (if `autoUpdate` is true). Set `autoUpdate = false` and use `needsUpdate = true` for one-shot updates to improve performance for static masks.
 
-11. **No Bloom filter** -- v4 does not have a dedicated Bloom filter. Use ParallelFilters with Threshold + Blur + ADD blend instead (see Common Patterns).
+11. **No Bloom filter** -- v4 does not have a dedicated Bloom filter. Use ParallelFilters with Threshold + Blur + ADD blend instead (see Common Patterns), or use `Phaser.Actions.AddEffectBloom` to automate the process.
 
 ---
 
@@ -384,9 +384,9 @@ cm.colorMatrix.contrast(0.3);
 |---|---|---|
 | `gameObject.preFX` / `gameObject.postFX` | `gameObject.filters.internal` / `gameObject.filters.external` | `preFX`/`postFX` replaced by internal/external filter lists |
 | `camera.postFX` | `camera.filters.internal` / `camera.filters.external` | Cameras now have both internal and external lists |
-| `FX.addBloom()` | Use `ParallelFilters` + Threshold + Blur | No dedicated Bloom filter; build it with ParallelFilters |
-| `FX.addCircle()` | Use Vignette or Mask | Circle effect removed; use Vignette with radius or a circular Mask |
-| `FX.addGradient()` | Use GradientMap or Vignette | New GradientMap filter with ColorRamp support |
+| `FX.addBloom()` | Use `ParallelFilters` + Threshold + Blur | No dedicated Bloom filter; build it with ParallelFilters or `Phaser.Actions.AddEffectBloom` |
+| `FX.addCircle()` | Use Vignette or Mask | Circle effect removed; use Vignette with radius or a circular Mask, or automate with `Phaser.Actions.AddMaskShape` |
+| `FX.addGradient()` | Use Gradient GameObject + Quantize | New Gradient GameObject renders gradients; Quantize adds steps if wanted |
 | Glow `quality` was 0-1 fraction | Glow `quality` is an integer (default 10) | Stochastic sampling replaces line sampling; higher quality at lower values |
 | `camera.setMask()` | `camera.filters.internal.addMask()` | Masks are now filters, not a separate system |
 | `gameObject.setMask()` | `gameObject.filters.internal.addMask()` | Same unified filter system |
