@@ -20,9 +20,7 @@
  * @since 3.53.0
  *
  * @param {Array.<object>} wangsets - The array of wangset objects (parsed from JSON)
- * @param {object} datas - The field into which to put wangset data from Tiled.
- *
- * @return {object} An object containing the tileset and image collection data.
+ * @param {object} datas - The object into which wangset data from Tiled is stored, keyed by tile ID.
  */
 var ParseWangsets = function (wangsets, datas)
 {

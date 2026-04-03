@@ -11,9 +11,9 @@ var SceneEvents = require('../scene/events');
 
 /**
  * @classdesc
- * The Data Component features a means to store pieces of data specific to a Game Object, System or Plugin.
- * You can then search, query it, and retrieve the data. The parent must either extend EventEmitter,
- * or have a property called `events` that is an instance of it.
+ * The Data Manager Plugin is a Game Object Component that provides data storage and retrieval
+ * functionality, integrated with the Scene lifecycle. It extends DataManager with automatic
+ * Scene event handling for shutdown and destroy cleanup.
  *
  * @class DataManagerPlugin
  * @extends Phaser.Data.DataManager
