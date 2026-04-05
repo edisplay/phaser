@@ -7,8 +7,10 @@
 var GetNormalFromMap = require('../GetNormalFromMap-glsl');
 
 /**
- * Return a ShaderAdditionConfig for creating an outInverseRotationMatrix
- * in the vertex shader, which is used to apply lighting to a texture.
+ * Return a ShaderAdditionConfig that injects the `getNormalFromMap` function
+ * into the fragment shader header and samples the normal map at the current
+ * texture coordinate during fragment processing. The resulting normal vector
+ * is used by the lighting pipeline to apply per-pixel lighting to a texture.
  *
  * @function Phaser.Renderer.WebGL.ShaderAdditionMakers.MakeGetNormalFromMap
  * @since 4.0.0

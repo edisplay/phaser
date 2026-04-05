@@ -25,11 +25,21 @@ function isDifferent (a, b)
 
 /**
  * @classdesc
- * Wrapper for a WebGL program, containing all the information that was used to create it.
+ * Wraps a WebGL shader program, which is the GPU-side program compiled from a vertex shader
+ * and a fragment shader. Together, these shaders define how geometry is transformed and
+ * how each pixel within that geometry is colored. Every pipeline in Phaser's WebGL renderer
+ * is backed by a WebGLProgramWrapper.
  *
- * A WebGLProgram should never be exposed outside the WebGLRenderer, so the WebGLRenderer
- * can handle context loss and other events without other systems having to be aware of it.
- * Always use WebGLProgramWrapper instead.
+ * Beyond holding the compiled program, this wrapper manages the full lifecycle of the
+ * associated WebGL resources: it tracks vertex attribute locations and layout, stores
+ * uniform values, and queues uniform update requests that are applied lazily when the
+ * program is bound for drawing.
+ *
+ * The raw WebGLProgram object should never be used or stored directly outside of the
+ * WebGLRenderer. By routing all access through this wrapper, the renderer can transparently
+ * handle WebGL context loss and restoration — recreating the underlying program and
+ * re-applying all state — without any other system needing to be aware of it.
+ * Always use WebGLProgramWrapper instead of holding a direct WebGLProgram reference.
  *
  * @class WebGLProgramWrapper
  * @memberof Phaser.Renderer.WebGL.Wrappers
@@ -429,9 +439,10 @@ var WebGLProgramWrapper = new Class({
     },
 
     /**
-     * Set this program as the active program in the WebGL context.
-     *
-     * This will also update the uniform state.
+     * Set this program as the active program in the WebGL context, then
+     * process all pending uniform update requests that were queued via
+     * `setUniform`. Each request is applied to the GPU and the queue is
+     * cleared, so only values that have actually changed are sent to WebGL.
      *
      * @method Phaser.Renderer.WebGL.Wrappers.WebGLProgramWrapper#bind
      * @since 4.0.0
@@ -530,7 +541,13 @@ var WebGLProgramWrapper = new Class({
     },
 
     /**
-     * Remove this WebGLProgram from the GL context.
+     * Destroys this WebGLProgramWrapper and releases all associated WebGL resources.
+     *
+     * If the context is not lost, this deletes the vertex shader, fragment shader,
+     * and the linked WebGLProgram from the GPU, and disables all vertex attribute
+     * arrays used by this program. The uniform map, attribute map, and any pending
+     * uniform requests are also cleared. All internal references are then nulled so
+     * this wrapper can be safely garbage-collected.
      *
      * @method Phaser.Renderer.WebGL.Wrappers.WebGLProgramWrapper#destroy
      * @since 3.80.0

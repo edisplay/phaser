@@ -11,7 +11,12 @@ var ShaderSourceFS = require('../../shaders/FilterThreshold-frag.js');
 
 /**
  * @classdesc
- * This RenderNode renders the Threshold filter effect.
+ * This RenderNode renders the Threshold filter effect, which converts each
+ * pixel of a Game Object to either fully opaque or fully transparent based on
+ * its luminance value relative to a configurable threshold range. Pixels whose
+ * luminance falls below `edge1` are discarded, those above `edge2` are kept,
+ * and those in between are smoothly interpolated. The effect can optionally be
+ * inverted so that bright pixels are discarded instead of dark ones.
  * See {@link Phaser.Filters.Threshold}.
  *
  * @class FilterThreshold
@@ -29,6 +34,18 @@ var FilterThreshold = new Class({
         BaseFilterShader.call(this, 'FilterThreshold', manager, null, ShaderSourceFS);
     },
 
+    /**
+     * Sets the WebGL shader uniforms required by the Threshold filter.
+     *
+     * Passes the lower threshold edge (`edge1`), the upper threshold edge
+     * (`edge2`), and the invert flag to the fragment shader so it can apply
+     * the correct threshold calculation for the current frame.
+     *
+     * @method Phaser.Renderer.WebGL.RenderNodes.FilterThreshold#setupUniforms
+     * @since 4.0.0
+     * @param {Phaser.Filters.Threshold} controller - The filter controller providing the uniform values.
+     * @param {Phaser.Renderer.WebGL.DrawingContext} drawingContext - The current drawing context.
+     */
     setupUniforms: function (controller, drawingContext)
     {
         var programManager = this.programManager;

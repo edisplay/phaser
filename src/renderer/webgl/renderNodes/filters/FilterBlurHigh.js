@@ -11,11 +11,14 @@ var ShaderSourceFS = require('../../shaders/FilterBlurHigh-frag.js');
 
 /**
  * @classdesc
- * This RenderNode renders the BlurHigh filter effect.
- * This is a high quality blur filter.
- * It should not be used directly.
- * It is intended to be called by the FilterBlur filter
- * based on the quality setting of the controller it is running.
+ * A RenderNode that renders a high quality Gaussian blur effect using a
+ * dedicated fragment shader. Unlike the standard blur variant, this node
+ * uses a larger kernel that produces smoother, more visually accurate results
+ * at the cost of additional GPU work per pass.
+ *
+ * This node should not be instantiated or called directly. It is selected
+ * and invoked automatically by the `FilterBlur` RenderNode when the blur
+ * controller's quality setting is set to high.
  *
  * @class FilterBlurHigh
  * @extends Phaser.Renderer.WebGL.RenderNodes.BaseFilterShader
@@ -32,6 +35,20 @@ var FilterBlurHigh = new Class({
         BaseFilterShader.call(this, 'FilterBlurHigh', manager, null, ShaderSourceFS);
     },
 
+    /**
+     * Uploads the shader uniforms required for the high quality blur pass.
+     *
+     * Called automatically by the rendering pipeline before the blur shader
+     * is executed. It passes the current render target dimensions as the
+     * `resolution` uniform, the blur `strength`, the tint `color`, and the
+     * directional `offset` (x/y) that controls which axis the blur is applied
+     * along for the current pass.
+     *
+     * @method Phaser.Renderer.WebGL.RenderNodes.FilterBlurHigh#setupUniforms
+     * @since 4.0.0
+     * @param {Phaser.Filters.Blur} controller - The Blur filter controller providing the blur parameters.
+     * @param {Phaser.Renderer.WebGL.DrawingContext} drawingContext - The current drawing context, used to determine the render resolution.
+     */
     setupUniforms: function (controller, drawingContext)
     {
         var programManager = this.programManager;

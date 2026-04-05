@@ -20,7 +20,7 @@ var TransformMatrix = require('../../gameobjects/components/TransformMatrix');
 /**
  * @classdesc
  * The Canvas Renderer is responsible for managing 2D canvas rendering contexts,
- * including the one used by the Games canvas. It tracks the internal state of a
+ * including the one used by the Game's canvas. It tracks the internal state of a
  * given context and can render textured Game Objects to it, taking into
  * account alpha, blending, and scaling.
  *
@@ -221,7 +221,10 @@ var CanvasRenderer = new Class({
     },
 
     /**
-     * Prepares the game canvas for rendering.
+     * Sets up the event listeners required by the renderer. Specifically, it
+     * listens for the Game BOOT event to fill the background color on the canvas,
+     * and waits for the Texture Manager's READY event before completing the boot
+     * sequence and registering the Scale Manager resize handler.
      *
      * @method Phaser.Renderer.Canvas.CanvasRenderer#init
      * @since 3.0.0
@@ -290,7 +293,9 @@ var CanvasRenderer = new Class({
     },
 
     /**
-     * Resize the main game canvas.
+     * Updates the internal width and height values of the renderer to the given
+     * dimensions and emits the RESIZE event. This is called automatically when the
+     * Scale Manager detects a canvas size change.
      *
      * @method Phaser.Renderer.Canvas.CanvasRenderer#resize
      * @fires Phaser.Renderer.Events#RESIZE
@@ -370,7 +375,12 @@ var CanvasRenderer = new Class({
     },
 
     /**
-     * Called at the start of the render loop.
+     * Called at the start of each render loop. Resets the game context's global
+     * alpha, composite operation, and transform to their defaults. If the renderer
+     * is configured to clear the canvas before each render, it clears the viewport
+     * and, if the background is not transparent, fills it with the configured
+     * background color. Saves the context state and resets the draw count before
+     * emitting the PRE_RENDER_CLEAR and PRE_RENDER events.
      *
      * @method Phaser.Renderer.Canvas.CanvasRenderer#preRender
      * @fires Phaser.Renderer.Events#PRE_RENDER_CLEAR
@@ -875,7 +885,8 @@ var CanvasRenderer = new Class({
     },
 
     /**
-     * Destroys all object references in the Canvas Renderer.
+     * Removes all event listeners and nullifies all object references in the
+     * Canvas Renderer, allowing it to be garbage collected.
      *
      * @method Phaser.Renderer.Canvas.CanvasRenderer#destroy
      * @since 3.0.0

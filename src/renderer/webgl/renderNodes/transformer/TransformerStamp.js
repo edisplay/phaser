@@ -11,10 +11,20 @@ var RenderNode = require('../RenderNode');
 
 /**
  * @classdesc
- * A RenderNode which handles transformation data for a single Stamp-like GameObject.
+ * A RenderNode which computes and stores the world-space quad vertices for a
+ * single Stamp-like GameObject, such as a Stamp or similar object that renders
+ * directly into world space without being affected by the camera transform.
  *
- * This is a modified version of the TransformerImage class.
- * It skips the camera matrix.
+ * This is a modified version of the `TransformerImage` RenderNode. Unlike
+ * `TransformerImage`, this node skips the camera matrix multiplication entirely,
+ * meaning the resulting quad coordinates are in world space rather than
+ * camera-projected screen space. This makes it suitable for objects that manage
+ * their own world-to-screen positioning, such as the Stamp Game Object.
+ *
+ * During the `run` call, the node applies the GameObject's position, rotation,
+ * scale, flip, and display origin to compute the final four corner vertices of
+ * the rendered quad, storing them in the `quad` Float32Array. Vertex rounding
+ * is also applied when appropriate to prevent sub-pixel rendering artefacts.
  *
  * @class TransformerStamp
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -45,7 +55,9 @@ var TransformerStamp = new Class({
         this._spriteMatrix = new TransformMatrix();
 
         /**
-         * The matrix used to store the final quad data for rendering.
+         * A Float32Array containing the eight vertex coordinates (x, y pairs for
+         * each of the four corners) of the transformed quad, written during `run`
+         * and consumed by subsequent renderer nodes to draw the GameObject.
          *
          * @name Phaser.Renderer.WebGL.RenderNodes.TransformerStamp#quad
          * @type {Float32Array}
@@ -60,7 +72,17 @@ var TransformerStamp = new Class({
     },
 
     /**
-     * Stores the transform data for rendering.
+     * Computes the world-space quad vertices for the given Stamp-like GameObject
+     * and stores them in the `quad` Float32Array for use by subsequent render
+     * nodes. The camera matrix is intentionally excluded from this calculation.
+     *
+     * The method resolves the frame offset and display origin into local-space
+     * corner coordinates, applies horizontal and vertical flipping (adjusting
+     * the offset when no custom pivot is set), then builds the sprite transform
+     * matrix from the GameObject's position, rotation, and scale. The four
+     * corner vertices are projected through that matrix via `setQuad` and,
+     * when vertex rounding is required, each coordinate is rounded to the
+     * nearest integer to avoid sub-pixel rendering artefacts.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.TransformerStamp#run
      * @since 4.0.0

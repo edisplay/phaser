@@ -15,10 +15,13 @@ var Class = require('../../utils/Class');
 
 /**
  * @classdesc
- * The ShaderProgramFactory is a utility class used to generate
- * {@link Phaser.Renderer.WebGL.Wrappers.WebGLProgramWrapper} objects.
- * It facilitates generating variants of a shader program based on
- * configuration settings.
+ * The ShaderProgramFactory is a utility class used to create and cache
+ * {@link Phaser.Renderer.WebGL.Wrappers.WebGLProgramWrapper} objects for the
+ * WebGL renderer. It assembles compiled shader programs from a base shader
+ * combined with optional additions and feature flags, then stores the result
+ * under a unique key so that the same combination is never compiled more than
+ * once. Use this class when you need to obtain a shader program that may vary
+ * at runtime based on renderer capabilities or pipeline configuration.
  *
  * @class ShaderProgramFactory
  * @memberof Phaser.Renderer.WebGL
@@ -55,11 +58,13 @@ var ShaderProgramFactory = new Class({
     },
 
     /**
-     * Checks if a shader program exists based on the given configuration settings.
+     * Checks whether a compiled shader program with the given key already exists
+     * in the internal cache.
      *
      * @method Phaser.Renderer.WebGL.ShaderProgramFactory#has
      * @since 4.0.0
      * @param {string} key - The unique key of the shader program.
+     * @returns {boolean} `true` if a shader program with this key exists in the cache, otherwise `false`.
      */
     has: function (key)
     {
@@ -67,13 +72,17 @@ var ShaderProgramFactory = new Class({
     },
 
     /**
-     * Returns a shader program based on the given configuration settings.
+     * Returns a compiled shader program for the given configuration. If a
+     * program matching the derived key already exists in the cache it is
+     * returned immediately; otherwise a new program is compiled, stored in the
+     * cache, and returned.
      *
      * @method Phaser.Renderer.WebGL.ShaderProgramFactory#getShaderProgram
      * @since 4.0.0
      * @param {BaseShaderConfig} base - The base shader configuration.
      * @param {Phaser.Types.Renderer.WebGL.ShaderAdditionConfig[]} [additions] - An array of shader addition configurations.
      * @param {string[]} [features] - An array of enabled shader feature keys.
+     * @returns {Phaser.Renderer.WebGL.Wrappers.WebGLProgramWrapper} The compiled shader program wrapper.
      */
     getShaderProgram: function (base, additions, features)
     {
@@ -103,6 +112,7 @@ var ShaderProgramFactory = new Class({
      * @param {BaseShaderConfig} base - The base shader configuration.
      * @param {Phaser.Types.Renderer.WebGL.ShaderAdditionConfig[]} [additions] - An array of shader addition configurations.
      * @param {string[]} [features] - An array of enabled shader feature keys.
+     * @returns {string} The unique cache key for this shader configuration.
      */
     getKey: function (base, additions, features)
     {
@@ -139,6 +149,7 @@ var ShaderProgramFactory = new Class({
      * @param {BaseShaderConfig} base - The base shader configuration.
      * @param {Phaser.Types.Renderer.WebGL.ShaderAdditionConfig[]} [additions] - An array of shader addition configurations.
      * @param {string[]} [features] - An array of enabled shader feature keys.
+     * @returns {Phaser.Renderer.WebGL.Wrappers.WebGLProgramWrapper} The newly compiled and cached shader program wrapper.
      */
     createShaderProgram: function (name, base, additions, features)
     {

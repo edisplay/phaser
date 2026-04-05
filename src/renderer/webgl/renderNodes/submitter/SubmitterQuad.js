@@ -95,7 +95,13 @@ var SubmitterQuad = new Class({
     },
 
     /**
-     * Submit data for rendering.
+     * Processes the given GameObject and submits quad vertex data to the appropriate
+     * batch handler for rendering. This method invokes the texturer, transformer, and
+     * optional tinter nodes in sequence to compute texture coordinates, transformed
+     * vertex positions, and tint colors. If no tinter node is provided, Image-style
+     * tinting is read directly from the GameObject. It then calls `setRenderOptions`
+     * to resolve lighting and smooth pixel art settings before passing all assembled
+     * data to the batch handler.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.SubmitterQuad#run
      * @since 4.0.0
@@ -194,6 +200,22 @@ var SubmitterQuad = new Class({
         this.onRunEnd(drawingContext);
     },
 
+    /**
+     * Resolves and stores render options for the current GameObject into `_renderOptions`
+     * before it is submitted to the batch handler. This includes determining the correct
+     * normal map texture and rotation for lighting (falling back to the game object's base
+     * texture data source, then the renderer's default normal texture), resolving self-shadow
+     * settings (falling back to the global game configuration if not set on the object), and
+     * determining the smooth pixel art setting from either the base texture or the global
+     * game configuration. If the GameObject has no lighting component, the lighting option
+     * is set to `null`.
+     *
+     * @method Phaser.Renderer.WebGL.RenderNodes.SubmitterQuad#setRenderOptions
+     * @since 4.0.0
+     * @param {Phaser.GameObjects.GameObject} gameObject - The GameObject being rendered.
+     * @param {Phaser.Renderer.WebGL.Wrappers.WebGLTextureWrapper} [normalMap] - The normal map texture to use for lighting. If omitted, it will be resolved from the game object's base texture data source or the renderer's default normal texture.
+     * @param {number} [normalMapRotation] - The rotation of the normal map texture, in radians. If omitted or `NaN`, it will be resolved from the game object's rotation or its world transform matrix if it belongs to a container.
+     */
     setRenderOptions: function (gameObject, normalMap, normalMapRotation)
     {
         var renderOptions = this._renderOptions;

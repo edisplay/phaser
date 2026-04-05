@@ -105,7 +105,7 @@ var BaseFilterShader = new Class({
         /**
          * The vertex buffer layout for this RenderNode.
          *
-         * This consists of 4 bytes, 0-3, forming corners of a quad instance.
+         * This consists of 4 vertices forming the corners of a quad.
          *
          * @name Phaser.Renderer.WebGL.RenderNodes.BaseFilterShader#vertexBufferLayout
          * @type {Phaser.Renderer.WebGL.Wrappers.WebGLVertexBufferLayoutWrapper}
@@ -327,6 +327,7 @@ var BaseFilterShader = new Class({
 
     /**
      * Set up the uniforms for this shader, based on the controller.
+     * Override this method to handle uniform setup.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.BaseFilterShader#setupUniforms
      * @since 4.0.0
@@ -339,6 +340,20 @@ var BaseFilterShader = new Class({
     }
 });
 
+/**
+ * Remaps a normalized coordinate (0 or 1) into the range defined by `low` and `high`,
+ * where `low` and `high` are clip-space values in the range -1 to 1.
+ * This is used to compute texture coordinates for padded filter quads,
+ * mapping the full quad UV space onto a potentially offset sub-region.
+ *
+ * @ignore
+ * @function remapCoord
+ * @since 4.0.0
+ * @param {number} coord - The normalized coordinate to remap, either 0 (start) or 1 (end).
+ * @param {number} low - The clip-space lower bound, in the range -1 to 1.
+ * @param {number} high - The clip-space upper bound, in the range -1 to 1.
+ * @return {number} The remapped coordinate.
+ */
 function remapCoord (coord, low, high)
 {
     // Low,high are in the range -1,1.

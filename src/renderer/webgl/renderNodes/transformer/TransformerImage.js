@@ -11,7 +11,22 @@ var RenderNode = require('../RenderNode');
 
 /**
  * @classdesc
- * A RenderNode which handles transformation data for a single Image-like GameObject.
+ * A RenderNode that computes and stores the screen-space quad vertex positions
+ * for a single Image-like GameObject each time it is rendered.
+ *
+ * During its `run` call, this node combines the camera view matrix (adjusted
+ * for the game object's scroll factors), any parent container matrix, and the
+ * game object's own position, rotation, and scale into a single final transform
+ * matrix. It then projects the four corners of the game object's frame through
+ * that matrix and writes the resulting eight coordinate values (four x/y pairs)
+ * into the `quad` Float32Array, ready for consumption by the subsequent
+ * submitter node.
+ *
+ * Horizontal and vertical flipping are handled here, with the local origin
+ * offset adjusted automatically when the frame does not use a custom pivot.
+ * Vertex rounding is also applied when required by the game object or camera
+ * settings, snapping all quad corners to integer pixel coordinates to avoid
+ * sub-pixel rendering artefacts.
  *
  * @class TransformerImage
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -31,7 +46,10 @@ var TransformerImage = new Class({
         RenderNode.call(this, config.name, manager);
 
         /**
-         * The matrix used to store the final quad data for rendering.
+         * A flat array of 8 floats storing the screen-space positions of the four
+         * corners of the rendered quad, written during each `run` call. Values are
+         * ordered as [x0, y0, x1, y1, x2, y2, x3, y3], representing the top-left,
+         * top-right, bottom-left, and bottom-right corners respectively.
          *
          * @name Phaser.Renderer.WebGL.RenderNodes.TransformerImage#quad
          * @type {Float32Array}
@@ -66,7 +84,18 @@ var TransformerImage = new Class({
     },
 
     /**
-     * Stores the transform data for rendering.
+     * Computes the final screen-space quad vertex positions for the given
+     * Image-like GameObject and stores them in `this.quad`.
+     *
+     * The method builds the complete transform by combining the camera view
+     * matrix (modified by the game object's scroll factors), an optional parent
+     * container matrix, and the game object's own position, rotation, and scale.
+     * Horizontal and vertical flips are factored in by negating the relevant
+     * scale axis and, when the frame does not use a custom pivot, by adjusting
+     * the local origin offset so the image flips around its display origin.
+     * The resulting four corner positions are then projected through the matrix
+     * via `setQuad` and written into `this.quad`. If vertex rounding is required,
+     * all eight values are snapped to the nearest integer before the node exits.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.TransformerImage#run
      * @since 4.0.0

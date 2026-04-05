@@ -190,7 +190,7 @@ var WebGLBufferWrapper = new Class({
     /**
      * Updates the data in this WebGLBufferWrapper.
      * The dataBuffer must contain the new data to be uploaded to the GPU.
-     * Data will preserve its range from dataBuffer to the WebGLBuffer.
+     * The specified range of data is uploaded from the local dataBuffer to the WebGLBuffer on the GPU.
      *
      * @method Phaser.Renderer.WebGL.Wrappers.WebGLBufferWrapper#update
      * @since 4.0.0
@@ -282,7 +282,7 @@ var WebGLBufferWrapper = new Class({
     },
 
     /**
-     * Remove this WebGLBufferWrapper from the GL context.
+     * Destroys this WebGLBufferWrapper, deleting the underlying WebGLBuffer from the GL context and releasing all references to the dataBuffer and its typed array views.
      *
      * @method Phaser.Renderer.WebGL.Wrappers.WebGLBufferWrapper#destroy
      * @since 3.80.0

@@ -53,7 +53,12 @@ var SubmitterTileSprite = new Class({
     },
 
     /**
-     * Submit data for rendering.
+     * Submits vertex, texture, and tint data for a single TileSprite GameObject
+     * to the appropriate batch handler for WebGL rendering. This method invokes
+     * the texturer, transformer, and tinter nodes in sequence to populate the
+     * required rendering data, then passes it to the batch handler along with
+     * the UV matrix quad for tile scrolling and wrapping, and any lighting
+     * options including the tile's rotation applied to the normal map.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.SubmitterTileSprite#run
      * @since 4.0.0

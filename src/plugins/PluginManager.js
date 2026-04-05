@@ -315,7 +315,7 @@ var PluginManager = new Class({
      * @protected
      * @since 3.8.0
      *
-     * @return {string[]} A list keys of all the Scene Plugins to install.
+     * @return {string[]} A list of keys of all the Scene Plugins to install.
      */
     getDefaultScenePlugins: function ()
     {
@@ -849,8 +849,8 @@ var PluginManager = new Class({
      * @method Phaser.Plugins.PluginManager#registerFileType
      * @since 3.8.0
      *
-     * @param {string} key - The key of the Game Object that the given callbacks will create, i.e. `image`, `sprite`.
-     * @param {function} callback - The callback to invoke when the Game Object Factory is called.
+     * @param {string} key - The key of the file type to register with the Loader Plugin, i.e. `wad`, `atlas`.
+     * @param {function} callback - The callback to invoke when the Loader Plugin tries to load a file of this type.
      * @param {Phaser.Scene} [addToScene] - Optionally add this file type into the Loader Plugin owned by the given Scene.
      */
     registerFileType: function (key, callback, addToScene)

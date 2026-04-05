@@ -5,8 +5,11 @@
  */
 
 /**
- * Return a ShaderAdditionConfig for deriving rotation from `inTexDatum`.
- * This is useful for shaders that need to know their orientation.
+ * Creates and returns a `ShaderAdditionConfig` that reads the rotation value
+ * from the `inTexDatum` vertex attribute and exposes it as a `float rotation`
+ * variable in the vertex shader's processing stage. This addition is tagged
+ * for use with lighting shaders, enabling directional and normal-mapped
+ * lighting calculations to account for the rotation of the rendered geometry.
  *
  * @function Phaser.Renderer.WebGL.ShaderAdditionMakers.MakeRotationDatum
  * @since 4.0.0

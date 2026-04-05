@@ -150,6 +150,17 @@ var WebGLTextureUnitsWrapper = new Class({
         }
     },
 
+    /**
+     * Unbinds a specific texture from all texture units it is currently bound to.
+     *
+     * Iterates over all texture units and replaces any binding that matches
+     * the given texture with `null`. This is typically called when a texture
+     * is about to be destroyed, to ensure no unit holds a stale reference.
+     *
+     * @method Phaser.Renderer.WebGL.Wrappers.WebGLTextureUnitsWrapper#unbindTexture
+     * @since 4.0.0
+     * @param {Phaser.Renderer.WebGL.Wrappers.WebGLTextureWrapper} texture - The texture to unbind from all units.
+     */
     unbindTexture: function (texture)
     {
         for (var i = this.units.length - 1; i >= 0; i--)

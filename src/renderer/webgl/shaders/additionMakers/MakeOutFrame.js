@@ -5,7 +5,7 @@
  */
 
 /**
- * Returns a ShaderAdditionConfig for providing the vertex shader with the `inFrame` attribute.
+ * Returns a ShaderAdditionConfig that declares `inFrame` as a vertex attribute and passes it to the fragment shader via the `outFrame` varying.
  *
  * @function Phaser.Renderer.WebGL.ShaderAdditionMakers.MakeOutFrame
  * @since 4.0.0

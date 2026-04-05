@@ -47,7 +47,7 @@ module.exports = {
 
     /**
      * Multiply blend mode. For Canvas and WebGL.
-     * The pixels are of the top layer are multiplied with the corresponding pixel of the bottom layer. A darker picture is the result.
+     * The pixels of the top layer are multiplied with the corresponding pixel of the bottom layer. A darker picture is the result.
      *
      * @name Phaser.BlendModes.MULTIPLY
      * @type {number}
@@ -298,7 +298,7 @@ module.exports = {
     DESTINATION_ATOP: 24,
 
     /**
-     * Lighten blend mode. For Canvas only.
+     * Lighter blend mode. For Canvas only.
      * Where both shapes overlap the color is determined by adding color values.
      *
      * @name Phaser.BlendModes.LIGHTER

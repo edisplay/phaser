@@ -9,8 +9,14 @@ var RenderNode = require('./RenderNode');
 
 /**
  * @classdesc
- * A RenderNode which renders a stroke path consisting of several line segments,
- * potentially closed at the end.
+ * A RenderNode which renders a stroke path as a series of connected line
+ * segments, optionally closing the path by connecting the last segment back
+ * to the first. It is used by the WebGL renderer to draw stroked shapes, such
+ * as those created by the Graphics Game Object. Each segment is rendered as a
+ * quad (two triangles), and adjacent segments are joined with an additional
+ * connecting quad when the stroke width exceeds two pixels. A level-of-detail
+ * mechanism allows intermediate points that are too close together in screen
+ * space to be skipped, reducing overdraw on dense paths.
  *
  * @class StrokePath
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -45,13 +51,13 @@ var StrokePath = new Class({
      * @param {Phaser.Renderer.WebGL.RenderNodes.BatchHandlerTriFlat} submitterNode - The Submitter node to use.
      * @param {Phaser.Types.GameObjects.Graphics.WidePoint[]} path - The points that define the line segments.
      * @param {number} lineWidth - The width of the stroke.
-     * @param {boolean} open - Whether the stroke is open or closed.
+     * @param {boolean} open - If `true`, the path is open and the last segment will not be connected back to the first. If `false`, the path is closed and a connecting quad is drawn between the last and first segments.
      * @param {Phaser.GameObjects.Components.TransformMatrix} currentMatrix - The current transform matrix.
      * @param {number} tintTL - The top-left tint color.
      * @param {number} tintTR - The top-right tint color.
      * @param {number} tintBL - The bottom-left tint color.
      * @param {number} tintBR - The bottom-right tint color.
-     * @param {number} detail - The level of detail to use when rendering the stroke. Points which are only this far apart in screen space are combined. It is ignored if the entire path is equal to or shorter than this distance.
+     * @param {number} detail - The minimum distance, in screen-space pixels, between consecutive path points. Any intermediate point closer than this distance to the current point is skipped, reducing overdraw on dense paths. The final point of each segment is always preserved. Set to `0` to disable LOD and render every point.
      * @param {boolean} lighting - Whether to apply lighting effects to the stroke.
      */
     run: function (drawingContext, submitterNode, path, lineWidth, open, currentMatrix, tintTL, tintTR, tintBL, tintBR, detail, lighting)

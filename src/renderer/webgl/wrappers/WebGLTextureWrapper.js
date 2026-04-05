@@ -29,7 +29,7 @@ var IsSizePowerOfTwo = require('../../../math/pow2/IsSizePowerOfTwo');
  * @param {number} wrapT - Wrapping mode of the texture.
  * @param {number} wrapS - Wrapping mode of the texture.
  * @param {number} format - Which format does the texture use.
- * @param {?object} pixels - pixel data.
+ * @param {?object} pixels - The pixel data used to populate the texture. Can be a Canvas, Video, ImageData, Uint8Array, or compressed texture object.
  * @param {number} width - Width of the texture in pixels.
  * @param {number} height - Height of the texture in pixels.
  * @param {boolean} [pma=true] - Does the texture have premultiplied alpha?
@@ -87,7 +87,9 @@ var WebGLTextureWrapper = new Class({
         this.mipLevel = mipLevel;
 
         /**
-         * Filtering of the texture.
+         * The minification filter for the texture, as a WebGL filter constant
+         * (e.g. `gl.LINEAR` or `gl.NEAREST`). Applied when the texture is
+         * scaled down.
          *
          * @name Phaser.Renderer.WebGL.Wrappers.WebGLTextureWrapper#minFilter
          * @type {number}
@@ -96,7 +98,9 @@ var WebGLTextureWrapper = new Class({
         this.minFilter = minFilter;
 
         /**
-         * Filtering of the texture.
+         * The magnification filter for the texture, as a WebGL filter constant
+         * (e.g. `gl.LINEAR` or `gl.NEAREST`). Applied when the texture is
+         * scaled up.
          *
          * @name Phaser.Renderer.WebGL.Wrappers.WebGLTextureWrapper#magFilter
          * @type {number}
@@ -105,7 +109,8 @@ var WebGLTextureWrapper = new Class({
         this.magFilter = magFilter;
 
         /**
-         * Wrapping mode of the texture.
+         * The wrapping mode for the T (vertical) axis of the texture,
+         * as a WebGL wrap constant (e.g. `gl.REPEAT` or `gl.CLAMP_TO_EDGE`).
          *
          * @name Phaser.Renderer.WebGL.Wrappers.WebGLTextureWrapper#wrapT
          * @type {number}
@@ -114,7 +119,8 @@ var WebGLTextureWrapper = new Class({
         this.wrapT = wrapT;
 
         /**
-         * Wrapping mode of the texture.
+         * The wrapping mode for the S (horizontal) axis of the texture,
+         * as a WebGL wrap constant (e.g. `gl.REPEAT` or `gl.CLAMP_TO_EDGE`).
          *
          * @name Phaser.Renderer.WebGL.Wrappers.WebGLTextureWrapper#wrapS
          * @type {number}
@@ -123,7 +129,7 @@ var WebGLTextureWrapper = new Class({
         this.wrapS = wrapS;
 
         /**
-         * Which format does the texture use.
+         * The WebGL pixel format of the texture (e.g. `gl.RGBA` or `gl.RGB`).
          *
          * @name Phaser.Renderer.WebGL.Wrappers.WebGLTextureWrapper#format
          * @type {number}
@@ -305,7 +311,7 @@ var WebGLTextureWrapper = new Class({
      * @param {?object} source - The source to update the WebGLTexture with.
      * @param {number} width - The new width of the WebGLTexture.
      * @param {number} height - The new height of the WebGLTexture.
-     * @param {boolean} flipY - Should the WebGLTexture set `UNPACK_MULTIPLY_FLIP_Y`?
+     * @param {boolean} flipY - Should the WebGLTexture set `UNPACK_FLIP_Y_WEBGL`?
      * @param {number} wrapS - The new wrapping mode for the WebGLTexture.
      * @param {number} wrapT - The new wrapping mode for the WebGLTexture.
      * @param {number} minFilter - The new minification filter for the WebGLTexture.

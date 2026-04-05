@@ -5,7 +5,13 @@
  */
 
 /**
- * Factory for creating a WebGLBlendParameters.
+ * A factory namespace for creating `WebGLBlendParameters` objects, which
+ * describe the WebGL blend state used when rendering. Two factory methods are
+ * provided: `createCombined`, which applies the same blend equation and
+ * functions to both RGB and alpha channels, and `createSeparate`, which allows
+ * independent control over the RGB and alpha blend equations and functions.
+ * The resulting objects are consumed by the WebGL renderer when setting blend
+ * modes on draw calls.
  *
  * @namespace Phaser.Renderer.WebGL.WebGLBlendParametersFactory
  * @webglOnly
@@ -53,16 +59,21 @@ var WebGLBlendParametersFactory = {
     },
 
     /**
-     * Create a new WebGLBlendParameters object.
+     * Create a new WebGLBlendParameters object with independent control over
+     * the RGB and alpha blend equations and functions.
      *
      * Default values are for a normal blend mode.
      * - enabled: true
      * - color: [ 0, 0, 0, 0 ]
-     * - equation: gl.FUNC_ADD
-     * - funcSrc: gl.ONE
-     * - funcDst: gl.ONE_MINUS_SRC_ALPHA
+     * - equationRGB: gl.FUNC_ADD
+     * - equationAlpha: gl.FUNC_ADD
+     * - funcSrcRGB: gl.ONE
+     * - funcDstRGB: gl.ONE_MINUS_SRC_ALPHA
+     * - funcSrcAlpha: gl.ONE
+     * - funcDstAlpha: gl.ONE_MINUS_SRC_ALPHA
      *
-     * Where `equation`, `funcSrc`, and `funcDst` are the same for RGB and alpha.
+     * Unlike `createCombined`, the RGB and alpha channels can use different
+     * equations and blend functions.
      *
      * @method Phaser.Renderer.WebGL.WebGLBlendParametersFactory#createSeparate
      * @param {Phaser.Renderer.WebGL.WebGLRenderer} renderer - The WebGLRenderer to create the WebGLBlendParameters for.

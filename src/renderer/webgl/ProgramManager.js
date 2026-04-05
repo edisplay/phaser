@@ -160,7 +160,9 @@ var ProgramManager = new Class({
     },
 
     /**
-     * Resets the current configuration object.
+     * Resets the current configuration object to its default empty state,
+     * clearing the base vertex and fragment shaders, all shader additions,
+     * and all features.
      *
      * @method Phaser.Renderer.WebGL.ProgramManager#resetCurrentConfig
      * @since 4.0.0
@@ -212,10 +214,14 @@ var ProgramManager = new Class({
     },
 
     /**
-     * Set the stored uniforms on a shader program.
+     * Applies all stored uniform values to the given shader program.
+     * This is used to restore uniform state when switching between
+     * shader programs, ensuring the new program receives the same
+     * uniform values as the previous one.
      *
      * @method Phaser.Renderer.WebGL.ProgramManager#applyUniforms
      * @since 4.0.0
+     * @param {Phaser.Renderer.WebGL.Wrappers.WebGLProgramWrapper} program - The shader program to apply the uniforms to.
      */
     applyUniforms: function (program)
     {

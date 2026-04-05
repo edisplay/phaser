@@ -10,6 +10,7 @@
  *
  * @function Phaser.Renderer.WebGL.ShaderAdditionMakers.MakeAnimLength
  * @since 4.0.0
+ * @param {number} maxAnims - The maximum number of animation frames to support. This value is injected into the shader as the `MAX_ANIM_FRAMES` preprocessor constant.
  * @param {boolean} [disable=false] - Whether to disable the shader addition on creation.
  * @return {Phaser.Types.Renderer.WebGL.ShaderAdditionConfig} The shader addition configuration.
  */

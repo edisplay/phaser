@@ -7,8 +7,10 @@
 var GetTexRes = require('../GetTexRes-glsl');
 
 /**
- * Returns a ShaderAdditionConfig for extracting a resolution
- * from an array of resolutions, such as is used in multi-texture rendering.
+ * Creates and returns a ShaderAdditionConfig that injects a GLSL fragment
+ * shader header providing a helper function for looking up a texture's
+ * resolution from a uniform array of resolutions, as used in multi-texture
+ * rendering where each bound texture may have a different size.
  *
  * @function Phaser.Renderer.WebGL.ShaderAdditionMakers.MakeGetTexRes
  * @since 4.0.0

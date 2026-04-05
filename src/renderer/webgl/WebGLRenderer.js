@@ -948,7 +948,7 @@ var WebGLRenderer = new Class({
      * @method Phaser.Renderer.WebGL.WebGLRenderer#setContextHandlers
      * @since 3.85.0
      *
-     * * @param {function} [contextLost] - Custom handler for responding to the WebGL context lost event. Set as `undefined` to use the default handler.
+     * @param {function} [contextLost] - Custom handler for responding to the WebGL context lost event. Set as `undefined` to use the default handler.
      * @param {function} [contextRestored] - Custom handler for responding to the WebGL context restored event. Set as `undefined` to use the default handler.
      */
     setContextHandlers: function (contextLost, contextRestored)
@@ -1859,6 +1859,8 @@ var WebGLRenderer = new Class({
      * @param {Phaser.Renderer.WebGL.Wrappers.WebGLProgramWrapper} program - The program to bind the VAO to.
      * @param {Phaser.Renderer.WebGL.Wrappers.WebGLBufferWrapper} indexBuffer - The index buffer.
      * @param {Phaser.Types.Renderer.WebGL.WebGLAttributeBufferLayout[]} attributeBufferLayouts - The attribute buffer layouts.
+     *
+     * @return {Phaser.Renderer.WebGL.Wrappers.WebGLVAOWrapper} The newly created WebGLVAOWrapper.
      */
     createVAO: function (program, indexBuffer, attributeBufferLayouts)
     {

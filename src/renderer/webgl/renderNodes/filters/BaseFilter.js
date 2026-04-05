@@ -9,8 +9,16 @@ var RenderNode = require('../RenderNode');
 
 /**
  * @classdesc
- * This is a base class for all filters.
- * It should not be used directly, but should be extended by all other filters.
+ * The base class for all WebGL post-processing filters in Phaser.
+ *
+ * Filters are render nodes that apply visual effects to a WebGL texture by
+ * processing an input drawing context and producing an output drawing context.
+ * They are managed by a `Phaser.Filters.Controller`, which chains multiple
+ * filters together so that each filter's output becomes the next filter's
+ * input. Examples of filters include blur, glow, bloom, and color correction.
+ *
+ * This class should not be instantiated directly. Instead, extend it to create
+ * a custom filter that overrides the {@link Phaser.Renderer.WebGL.RenderNodes.BaseFilter#run run} method.
  *
  * @class BaseFilter
  * @extends Phaser.Renderer.WebGL.RenderNodes.RenderNode
@@ -30,7 +38,9 @@ var BaseFilter = new Class({
     },
 
     /**
-     * Run the filter. It returns a drawing context containing the output texture.
+     * Runs the filter, processing the input drawing context and returning a drawing context containing the output texture.
+     *
+     * This base implementation does nothing and is intended to be overridden by subclasses. Each subclass should apply its specific visual effect (for example, blur or glow) by writing to the output drawing context using WebGL shader programs.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.BaseFilter#run
      * @since 4.0.0

@@ -9,7 +9,13 @@ var CONST = require('../../../const');
 var RenderNode = require('./RenderNode');
 
 /**
- * Render a list of Game Objects.
+ * A WebGL render node that iterates over a display list of Game Objects and
+ * renders each one in order. It manages blend mode transitions between children
+ * by cloning the active DrawingContext whenever a child requires a different
+ * blend mode, ensuring that any in-progress batch is flushed before the blend
+ * mode changes. When the blend mode returns to the base value the original
+ * context is restored, and any intermediate contexts are released once they
+ * are no longer needed.
  *
  * @class ListCompositor
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -36,8 +42,8 @@ var ListCompositor = new Class({
      * @since 4.0.0
      * @param {Phaser.Renderer.WebGL.DrawingContext} displayContext - The context currently in use.
      * @param {Phaser.GameObjects.GameObject[]} children - The list of children to render.
-     * @param {Phaser.GameObjects.Components.TransformMatrix} [parentTransformMatrix] - This transform matrix is defined if the game object is nested
-     * @param {number} [renderStep=0] - Which step of the rendering process is this? This is the index of the currently running function in a list of functions.
+     * @param {Phaser.GameObjects.Components.TransformMatrix} [parentTransformMatrix] - The accumulated transform matrix of the parent Game Object, passed down when this list is rendered as part of a nested display hierarchy.
+     * @param {number} [renderStep=0] - The index of the current render step within the ordered list of render functions being executed for this frame.
      */
     run: function (
         displayContext,

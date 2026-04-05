@@ -193,9 +193,9 @@ var BatchHandlerQuad = new Class({
     },
 
     /**
-     * Update the number of draw calls per batch.
-     * This rebuilds the shader program with the new draw call count.
-     * The minimum number of draw calls is 1, and the maximum is the number of
+     * Update the maximum number of textures per batch.
+     * This rebuilds the shader program with the new texture count.
+     * The minimum number of textures is 1, and the maximum is the number of
      * texture units defined in the renderer.
      * Rebuilding the shader may be expensive, so use this sparingly.
      *
@@ -209,7 +209,7 @@ var BatchHandlerQuad = new Class({
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.BatchHandlerQuad#updateTextureCount
      * @since 4.0.0
-     * @param {number} [count] - The new number of draw calls per batch. If undefined, the maximum number of texture units is used.
+     * @param {number} [count] - The new maximum number of textures per batch. If undefined, the maximum number of texture units is used.
      */
     updateTextureCount: function (count)
     {
@@ -298,9 +298,13 @@ var BatchHandlerQuad = new Class({
     },
 
     /**
-     * Update the texture uniforms for the current shader program.
+     * Set the texture resolution uniforms for the current shader program.
+     * Specifically, this sets the `uMainResolution` uniform with the pixel
+     * dimensions of each bound texture. This information is required by shader
+     * features such as smooth pixel art rendering.
      *
-     * This method is called automatically when the batch is run.
+     * This method is called automatically when the batch is run and the
+     * `texRes` render option is enabled.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.BatchHandlerQuad#setupTextureUniforms
      * @since 4.0.0
@@ -378,7 +382,11 @@ var BatchHandlerQuad = new Class({
     },
 
     /**
-     * Update the render options for the current shader program.
+     * Compare the incoming render options against the currently active options
+     * and stage any differences into `nextRenderOptions`. Sets
+     * `_renderOptionsChanged` to `true` if any option has changed, signalling
+     * that the current batch should be flushed and the shader rebuilt via
+     * `updateShaderConfig` before the next draw.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.BatchHandlerQuad#updateRenderOptions
      * @since 4.0.0
@@ -616,12 +624,12 @@ var BatchHandlerQuad = new Class({
      * Add a quad to the batch.
      *
      * For compatibility with TRIANGLE_STRIP rendering,
-     * the vertices are added in the order:
+     * the vertices are written into the buffer in the order:
      *
-     * - Top-left
      * - Bottom-left
-     * - Top-right
+     * - Top-left
      * - Bottom-right
+     * - Top-right
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.BatchHandlerQuad#batch
      * @since 4.0.0

@@ -10,8 +10,12 @@ var RenderNode = require('./RenderNode');
 
 /**
  * @classdesc
- * A RenderNode which renders a filled rectangle.
- * This is useful for full-screen effects and rectangle geometry.
+ * A RenderNode which renders a solid, flat-colored rectangle into the WebGL
+ * render pipeline. It transforms four corner vertices using a provided
+ * transform matrix, submits them as two triangles to a `BatchHandlerTriFlat`
+ * node, and supports per-corner tint colors and optional lighting. This node
+ * is used for full-screen color fills, background overlays, camera effects,
+ * and any rectangle-shaped geometry that does not require a texture.
  *
  * @class FillRect
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -65,17 +69,20 @@ var FillRect = new Class({
     },
 
     /**
-     * Render the rectangle.
+     * Transforms a rectangle's four corner vertices using the given matrix,
+     * then submits them as two indexed triangles to the batch handler, along
+     * with per-corner tint colors. Call this once per frame for each rectangle
+     * you wish to draw; it delegates the actual draw call to the submitter node.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.FillRect#run
      * @since 4.0.0
      * @param {Phaser.Renderer.WebGL.DrawingContext} drawingContext - The context currently in use.
      * @param {?Phaser.GameObjects.Components.TransformMatrix} currentMatrix - A transform matrix to apply to the vertices. If not defined, the identity matrix is used.
      * @param {?Phaser.Renderer.WebGL.RenderNodes.BatchHandlerTriFlat} submitterNode - The Submitter node to use. If not defined, `BatchHandlerTriFlat` is used.
-     * @param {number} x - The x-coordinate of the rectangle.
-     * @param {number} y - The y-coordinate of the rectangle.
-     * @param {number} width - The width of the rectangle.
-     * @param {number} height - The height of the rectangle.
+     * @param {number} x - The x-coordinate of the top-left corner of the rectangle, in pixels.
+     * @param {number} y - The y-coordinate of the top-left corner of the rectangle, in pixels.
+     * @param {number} width - The width of the rectangle, in pixels.
+     * @param {number} height - The height of the rectangle, in pixels.
      * @param {number} tintTL - The top-left tint color.
      * @param {number} tintTR - The top-right tint color.
      * @param {number} tintBL - The bottom-left tint color.

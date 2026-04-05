@@ -14,8 +14,14 @@ var ShaderSourceFS = require('../shaders/ShaderQuad-frag');
 
 /**
  * @classdesc
- * A RenderNode that renders a quad using a shader program.
- * This is used for custom rendering effects and post-processing.
+ * A RenderNode that renders a single quad using a custom GLSL shader program.
+ * It is used by the Shader Game Object to execute user-defined vertex and
+ * fragment shaders against a four-vertex quad that matches the game object's
+ * dimensions. The quad is transformed through the scene camera and supports
+ * optional rendering directly to a texture via `renderToTexture`. Shader
+ * uniforms, texture samplers, and shader addition variants are all managed
+ * through this node, making it the primary entry point for custom WebGL
+ * shader effects in Phaser.
  *
  * @class ShaderQuad
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -62,7 +68,7 @@ var ShaderQuad = new Class({
         /**
          * The vertex buffer layout for this RenderNode.
          *
-         * This consists of 4 bytes, 0-3, forming corners of a quad instance.
+         * This consists of 4 vertices, 0-3, forming the corners of a quad instance.
          *
          * @name Phaser.Renderer.WebGL.RenderNodes.ShaderQuad#vertexBufferLayout
          * @type {Phaser.Renderer.WebGL.Wrappers.WebGLVertexBufferLayoutWrapper}
@@ -102,7 +108,9 @@ var ShaderQuad = new Class({
         }
 
         /**
-         * The uniform callback used to set uniforms on the shader program.
+         * A bound convenience function that queues a uniform value to be applied
+         * to the current shader program. Delegates to the ProgramManager's
+         * `setUniform` method.
          *
          * @name Phaser.Renderer.WebGL.RenderNodes.ShaderQuad#setUniform
          * @type {function}

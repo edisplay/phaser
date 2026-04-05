@@ -11,7 +11,12 @@ var ShaderSourceFS = require('../../shaders/FilterQuantize-frag.js');
 
 /**
  * @classdesc
- * This RenderNode renders the Quantize filter effect.
+ * This RenderNode renders the Quantize filter effect, which reduces the number
+ * of distinct color levels in the output image to simulate a low bit-depth or
+ * posterized look. The effect can be applied in different color modes and
+ * supports optional dithering to reduce visible banding. Gamma correction and
+ * an offset value allow fine-tuning of how the quantization steps are
+ * distributed across the tonal range.
  * See {@link Phaser.Filters.Quantize}.
  *
  * @class FilterQuantize
@@ -29,6 +34,16 @@ var FilterQuantize = new Class({
         BaseFilterShader.call(this, 'FilterQuantize', manager, null, ShaderSourceFS);
     },
 
+    /**
+     * Sets the shader uniforms for the Quantize filter from the given
+     * controller. This transfers the current steps, gamma, offset, mode, and
+     * dither values to the WebGL program before rendering.
+     *
+     * @method Phaser.Renderer.WebGL.RenderNodes.FilterQuantize#setupUniforms
+     * @since 4.0.0
+     * @param {Phaser.Filters.Quantize} controller - The filter controller providing the uniform values.
+     * @param {Phaser.Renderer.WebGL.DrawingContext} _drawingContext - The current drawing context (unused).
+     */
     setupUniforms: function (controller, _drawingContext)
     {
         var programManager = this.programManager;

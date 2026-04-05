@@ -8,9 +8,15 @@ var Class = require('../../../utils/Class');
 
 /**
  * @classdesc
- * Wrapper for a vertex buffer layout.
- * This contains the buffer itself, the attribute layout information,
- * and the ArrayBuffer and associate views that the layout is based on.
+ * Wraps a WebGL vertex buffer together with its attribute layout description.
+ * This class manages the relationship between a `WebGLBufferWrapper` (the raw
+ * GPU buffer) and the attribute layout that describes how vertex data is
+ * arranged within it, including the stride, per-attribute byte counts, and
+ * byte offsets. It is used by Phaser's WebGL renderer to bind vertex data to
+ * shader attribute locations when drawing geometry. On construction, the
+ * layout is completed by computing stride, byte counts, and offsets from the
+ * provided attribute definitions, and any GL enum values specified as strings
+ * are resolved to their numeric equivalents.
  *
  * @class WebGLVertexBufferLayoutWrapper
  * @memberof Phaser.Renderer.WebGL.Wrappers
@@ -35,7 +41,9 @@ var WebGLVertexBufferLayoutWrapper = new Class({
         this.renderer = renderer;
 
         /**
-         * The layout of the buffer.
+         * The completed attribute buffer layout, describing the stride,
+         * attributes, their types, sizes, byte counts, and byte offsets
+         * within the vertex buffer.
          *
          * @name Phaser.Renderer.WebGL.Wrappers.WebGLVertexBufferLayoutWrapper#layout
          * @type {Phaser.Types.Renderer.WebGL.WebGLAttributeBufferLayout}
@@ -54,7 +62,7 @@ var WebGLVertexBufferLayoutWrapper = new Class({
         }
 
         /**
-         * The WebGLBuffer that this layout is based on.
+         * The WebGLBufferWrapper holding the vertex data for this layout.
          *
          * @name Phaser.Renderer.WebGL.Wrappers.WebGLVertexBufferLayoutWrapper#buffer
          * @type {Phaser.Renderer.WebGL.Wrappers.WebGLBufferWrapper}

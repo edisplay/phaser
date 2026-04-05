@@ -7,9 +7,20 @@
 var Class = require('../../../utils/Class');
 
 /**
- * A RenderNode is a node in the rendering graph.
- * It is invoked by calling `run`, which takes inputs and returns outputs
- * depending on the subclass implementation.
+ * A RenderNode is the base class for all nodes in Phaser's WebGL rendering graph.
+ * The rendering graph is a network of discrete, composable processing steps that
+ * together produce the final rendered output. Each node encapsulates a specific
+ * rendering task, such as batching geometry, applying a shader, or compositing
+ * a texture.
+ *
+ * Nodes are managed by the `RenderNodeManager` and executed by calling `run`,
+ * which accepts inputs and produces outputs specific to the subclass. You would
+ * subclass `RenderNode` when creating a custom rendering pipeline step that needs
+ * to integrate with Phaser's WebGL renderer.
+ *
+ * Subclasses must override the `run` method with their own implementation, and
+ * should call `onRunBegin` and `onRunEnd` at the start and end of `run` to
+ * support the lifecycle hook system.
  *
  * @class RenderNode
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -98,8 +109,14 @@ var RenderNode = new Class({
     {},
 
     /**
-     * Set whether the node should report debug information.
-     * It wraps the `run` method with additional debug information.
+     * Enables or disables debug reporting for this node.
+     *
+     * When enabled, the `run` method is replaced with a wrapper that pushes
+     * the node's name onto the manager's debug stack before execution and pops
+     * it afterwards, allowing the renderer to track which nodes are active.
+     * The original `run` implementation is preserved in `_run`.
+     *
+     * When disabled, the original `run` method is restored and `_run` is cleared.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.RenderNode#setDebug
      * @since 4.0.0

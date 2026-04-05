@@ -30,6 +30,8 @@ var DrawingContext = require('./DrawingContext');
  * @constructor
  * @since 4.0.0
  * @param {Phaser.Renderer.WebGL.WebGLRenderer} renderer - The renderer that owns this DrawingContextPool.
+ * @param {number} maxAge - The maximum age of a pooled DrawingContext in milliseconds, after which it becomes eligible for resizing and reuse.
+ * @param {number} maxPoolSize - The soft maximum number of DrawingContexts to keep in the pool. The pool may exceed this limit temporarily if demand requires it.
  */
 var DrawingContextPool = new Class({
     initialize: function DrawingContextPool (renderer, maxAge, maxPoolSize)
@@ -116,7 +118,12 @@ var DrawingContextPool = new Class({
     },
 
     /**
-     * Returns a DrawingContext of the given dimensions.
+     * Returns a DrawingContext of the requested dimensions, following the pool's
+     * priority order: an exact-size spare, an aged spare resized, a newly created
+     * context within the pool limit, the oldest spare resized, or finally a newly
+     * created context that exceeds the pool limit. If width or height are omitted,
+     * the renderer's current dimensions are used. Both values are clamped to the
+     * renderer's maximum texture size.
      *
      * @method Phaser.Renderer.WebGL.DrawingContextPool#get
      * @since 4.0.0

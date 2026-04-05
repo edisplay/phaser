@@ -10,13 +10,13 @@ var RenderNode = require('./RenderNode');
 
 /**
  * @classdesc
- * A RenderNode which fills a path.
+ * A RenderNode which fills a closed path with solid color.
  *
- * It works by taking the array of path data and then passing it through
- * Earcut, which creates a list of polygons.
- * Each polygon is then added to the batch.
- * The polygons are triangles, but they're rendered as quads
- * to be compatible with other batched quads.
+ * It works by taking the array of path data and passing it through
+ * Earcut, which triangulates the polygon into a list of triangles.
+ * Each triangle is then submitted to the batch for rendering.
+ * The first and last points in the path are always preserved; interior
+ * points may be skipped based on the `detail` threshold.
  *
  * @class FillPath
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -45,7 +45,7 @@ var FillPath = new Class({
      * @param {number} tintTL - The top-left tint color.
      * @param {number} tintTR - The top-right tint color.
      * @param {number} tintBL - The bottom-left tint color.
-     * @param {number} detail - The level of detail to use when filling the path. Points which are only this far apart in screen space are combined. It is ignored if the entire path is equal to or shorter than this distance.
+     * @param {number} detail - The level of detail to use when filling the path, in pixels. Any interior point whose x and y distances from the previous accepted point are both within this threshold is skipped. The first and last points are always kept. A value of 0 disables simplification and keeps all points.
      * @param {boolean} lighting - Whether to apply lighting effects to the path.
      */
     run: function (drawingContext, currentMatrix, submitterNode, path, tintTL, tintTR, tintBL, detail, lighting)

@@ -11,7 +11,12 @@ var ShaderSourceFS = require('../../shaders/FilterBokeh-frag.js');
 
 /**
  * @classdesc
- * This RenderNode renders the Bokeh filter effect.
+ * This RenderNode renders the Bokeh filter effect, which simulates the
+ * lens blur and depth-of-field appearance found in photography and film.
+ * It supports both a standard circular bokeh blur and a tilt-shift mode,
+ * which blurs only the top and bottom regions of the image to create the
+ * illusion of a shallow focal plane. The effect is controlled via the
+ * associated filter controller.
  * See {@link Phaser.Filters.Bokeh}.
  *
  * @class FilterBokeh
@@ -29,6 +34,17 @@ var FilterBokeh = new Class({
         BaseFilterShader.call(this, 'FilterBokeh', manager, null, ShaderSourceFS);
     },
 
+    /**
+     * Sets the WebGL shader uniforms required by the Bokeh fragment shader,
+     * sourcing values from the filter controller and the current drawing
+     * context. This method is called automatically each time the filter is
+     * rendered.
+     *
+     * @method Phaser.Renderer.WebGL.RenderNodes.FilterBokeh#setupUniforms
+     * @since 4.0.0
+     * @param {Phaser.Filters.Bokeh} controller - The Bokeh filter controller supplying the effect parameters.
+     * @param {Phaser.Renderer.WebGL.DrawingContext} drawingContext - The current drawing context, used to supply the render resolution.
+     */
     setupUniforms: function (controller, drawingContext)
     {
         var programManager = this.programManager;

@@ -11,6 +11,7 @@
  *
  * @function Phaser.Renderer.WebGL.ShaderAdditionMakers.MakeDefineTexCount
  * @since 4.0.0
+ * @param {number} maxTextures - The maximum number of textures the shader supports. This value is used to set the `TEXTURE_COUNT` preprocessor define in the fragment shader.
  * @param {boolean} [disable=false] - Whether to disable the shader addition on creation.
  * @return {Phaser.Types.Renderer.WebGL.ShaderAdditionConfig} The shader addition configuration.
  */

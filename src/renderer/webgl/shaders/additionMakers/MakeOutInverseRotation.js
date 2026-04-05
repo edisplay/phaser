@@ -7,8 +7,10 @@
 var OutInverseRotation = require('../OutInverseRotation-glsl');
 
 /**
- * Return a ShaderAdditionConfig for creating an outInverseRotationMatrix
- * in the vertex shader, which is used to apply lighting to a texture.
+ * Returns a ShaderAdditionConfig for creating an `outInverseRotationMatrix`
+ * varying in the vertex shader. This matrix is used during lighting calculations
+ * to correctly transform normal vectors into world space, ensuring that
+ * light direction is applied relative to the game object's orientation.
  *
  * The `rotation` variable must be available in the vertex renderer.
  *

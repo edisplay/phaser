@@ -5,7 +5,11 @@
  */
 
 /**
- * Factory for creating a WebGLStencilParameters.
+ * A factory object that creates `WebGLStencilParameters` configuration objects.
+ * These objects describe the complete stencil buffer state required by the
+ * WebGL renderer, covering the stencil test function, per-operation behaviour,
+ * and the value used to clear the stencil buffer. Use this factory whenever
+ * you need to define or reset stencil state for a render pass.
  *
  * @namespace Phaser.Renderer.WebGL.WebGLStencilParametersFactory
  * @webglOnly
@@ -13,18 +17,24 @@
  */
 var WebGLStencilParametersFactory = {
     /**
-    * Creates a new WebGLStencilParameters.
+    * Creates a new `WebGLStencilParameters` object that encapsulates the full
+    * stencil buffer configuration for a WebGL render pass. The returned object
+    * groups the arguments into the three sub-objects expected by the renderer:
+    * `func` (passed to `gl.stencilFunc`), `op` (passed to `gl.stencilOp`), and
+    * `clear` (the value written when the stencil buffer is cleared). All
+    * parameters are optional and fall back to sensible no-op defaults so the
+    * stencil buffer behaves as if it were disabled.
     *
     * @method Phaser.Renderer.WebGL.WebGLStencilParametersFactory#create
     * @since 4.0.0
     *
     * @param {Phaser.Renderer.WebGL.WebGLRenderer} renderer - The WebGLRenderer to create the WebGLStencilParameters for.
     * @param {GLboolean} [enabled=false] - Whether the stencil test is enabled.
-    * @param {GLenum} [func=GL_ALWAYS] - The comparison function.
-    * @param {GLint} [funcRef=0] - The reference value for the stencil test.
-    * @param {GLuint} [funcMask=0xFF] - The mask to apply to the stencil test.
+    * @param {GLenum} [func=GL_ALWAYS] - The stencil comparison function used to compare the reference value against the current stencil buffer value.
+    * @param {GLint} [funcRef=0] - The reference value against which the stencil buffer value is compared during the stencil test.
+    * @param {GLuint} [funcMask=0xFF] - The bitwise mask applied to both the reference value and the stencil buffer value before they are compared.
     * @param {GLenum} [opFail=GL_KEEP] - The operation to perform if the stencil test fails.
-    * @param {GLenum} [opZfail=GL_KEEP] - The operation to perform if the depth test fails.
+    * @param {GLenum} [opZfail=GL_KEEP] - The operation to perform if the stencil test passes but the depth test fails.
     * @param {GLenum} [opZpass=GL_KEEP] - The operation to perform if the stencil test passes and the depth test passes or is disabled.
     * @param {GLint} [clear=0] - The value to clear the stencil buffer to.
     *

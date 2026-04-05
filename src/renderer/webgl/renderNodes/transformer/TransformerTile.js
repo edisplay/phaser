@@ -11,6 +11,16 @@ var TransformerImage = require('./TransformerImage');
  * @classdesc
  * A RenderNode which handles transformation data for a single Tile within a TilemapLayer.
  *
+ * This node extends `TransformerImage` with tile-specific logic, including support
+ * for tileset offsets, per-tile flip flags, and per-tile rotation. It is used by
+ * the TilemapLayer rendering pipeline to position and orient each individual tile
+ * in world space before it is submitted to the batch renderer.
+ *
+ * Unlike `TransformerImage`, which operates on a standalone Game Object, this node
+ * reads positional and flip data from a tile element descriptor (`element`) rather
+ * than directly from the Game Object, allowing it to handle the many tiles that
+ * make up a single TilemapLayer in a single render pass.
+ *
  * @class TransformerTile
  * @memberof Phaser.Renderer.WebGL.RenderNodes
  * @constructor
@@ -33,7 +43,14 @@ var TransformerTile = new Class({
     },
 
     /**
-     * Stores the transform data for rendering.
+     * Computes and stores the world-space transform quad for a single tile element, ready for submission to the batch renderer.
+     *
+     * This method builds the final transformation by combining the camera view matrix (with scroll
+     * factor applied), an optional parent matrix for nested Game Objects, and a per-tile sprite
+     * matrix derived from the tile's pixel position, rotation, and the TilemapLayer's scale. Tileset
+     * tile offsets are factored into the world position, and horizontal or vertical flips are applied
+     * by negating the quad dimensions. If vertex rounding is enabled on the camera, the resulting
+     * quad coordinates are rounded to the nearest integer to avoid sub-pixel rendering artefacts.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.TransformerTile#run
      * @since 4.0.0
@@ -41,7 +58,7 @@ var TransformerTile = new Class({
      * @param {Phaser.GameObjects.GameObject} gameObject - The GameObject being rendered.
      * @param {Phaser.Renderer.WebGL.RenderNodes.RenderNode} texturerNode - The texturer node used to texture the GameObject. This contains relevant data on the dimensions of the object.
      * @param {Phaser.GameObjects.Components.TransformMatrix} [parentMatrix] - This transform matrix is defined if the game object is nested.
-     * @param {object} [element] - The specific element within the game object. This is used for objects that consist of multiple quads. It is unused here.
+     * @param {object} [element] - The tile element descriptor for the tile being rendered. Contains the tile's pixel position, rotation, flip flags, and GID index used to look up the tileset.
      */
     run: function (drawingContext, gameObject, texturerNode, parentMatrix, element)
     {

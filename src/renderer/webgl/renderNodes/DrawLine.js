@@ -9,7 +9,18 @@ var RenderNode = require('./RenderNode');
 
 /**
  * @classdesc
- * A RenderNode which computes the geometry of a line segment.
+ * A RenderNode which computes the geometry of a line segment and expands it
+ * into a quad suitable for WebGL rendering.
+ *
+ * A line segment has two endpoints (`a` and `b`) and can have a different
+ * width at each end, allowing tapered lines. This node calculates the four
+ * corner vertices of the quad that represents the line, by offsetting
+ * perpendicular to the line direction by the respective half-widths at each
+ * end. The resulting vertices are optionally transformed by a matrix and
+ * appended to a flat vertex list.
+ *
+ * This node is used internally by the WebGL renderer when drawing stroked
+ * paths, such as those produced by Graphics Game Objects.
  *
  * @class DrawLine
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -27,8 +38,11 @@ var DrawLine = new Class({
     },
 
     /**
-     * Get the transformed vertices of a line segment as a quad.
-     * The values are pushed to a `vertices` list in the order TL, BL, BR, TR.
+     * Computes the four vertices of the quad that represents a line segment
+     * and appends them to the provided `vertices` list. The line can vary in
+     * width between its start point (`a`) and end point (`b`), producing a
+     * tapered shape. Eight values are appended (four x/y pairs) in the order
+     * TL, BL, BR, TR, relative to the line's direction.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.DrawLine#run
      * @since 4.0.0

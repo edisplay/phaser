@@ -9,10 +9,19 @@ var RenderNode = require('../RenderNode');
 
 /**
  * @classdesc
- * A RenderNode which handles texturing for a single Image-like GameObject.
+ * A RenderNode which handles texturing for a single Image-like GameObject,
+ * such as an Image or Sprite.
  *
- * This node stores values relevant to texturing, such as UVs and frame data.
- * These values should be read off before the node is reused.
+ * During the WebGL rendering pipeline, this node is called to extract and
+ * temporarily cache the texture data needed to render a GameObject: its frame
+ * reference, UV source, and display dimensions. It accounts for cropped
+ * GameObjects by switching to the crop's UV coordinates and adjusted
+ * dimensions, and scales all dimensions by the frame source's resolution so
+ * that the upstream batcher receives device-independent pixel values.
+ *
+ * Because this node may be reused across multiple GameObjects in a single
+ * frame, callers must consume its stored values (via `frame`, `frameWidth`,
+ * `frameHeight`, and `uvSource`) before the next `run` call overwrites them.
  *
  * @class TexturerImage
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -38,7 +47,10 @@ var TexturerImage = new Class({
         this.frame = null;
 
         /**
-         * The width of the frame.
+         * The display width of the frame in resolution-adjusted pixels.
+         * This reflects the crop width when the GameObject is cropped, and is
+         * divided by the frame source's resolution to produce
+         * device-independent pixel values for the renderer.
          *
          * @name Phaser.Renderer.WebGL.RenderNodes.TexturerImage#frameWidth
          * @type {number}
@@ -47,7 +59,10 @@ var TexturerImage = new Class({
         this.frameWidth = 0;
 
         /**
-         * The height of the frame.
+         * The display height of the frame in resolution-adjusted pixels.
+         * This reflects the crop height when the GameObject is cropped, and is
+         * divided by the frame source's resolution to produce
+         * device-independent pixel values for the renderer.
          *
          * @name Phaser.Renderer.WebGL.RenderNodes.TexturerImage#frameHeight
          * @type {number}
@@ -69,8 +84,19 @@ var TexturerImage = new Class({
     },
 
     /**
-     * Set this RenderNode to temporarily store the texture data for the given
-     * GameObject. Ensure that it is used before the node is reused.
+     * Populates this RenderNode with the texture data required to render the
+     * given Image-like GameObject.
+     *
+     * This method resolves the correct UV source for the GameObject: if it is
+     * not cropped, the frame itself is used; if it is cropped, the crop object
+     * is used and its UVs are recalculated when the flip state has changed.
+     * Frame dimensions are set to the crop dimensions when cropped. In both
+     * cases, the resulting dimensions are divided by the frame source's
+     * resolution to produce device-independent pixel values.
+     *
+     * The stored values (`frame`, `frameWidth`, `frameHeight`, `uvSource`)
+     * must be consumed before this node is run again, as they will be
+     * overwritten on the next call.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.TexturerImage#run
      * @since 4.0.0

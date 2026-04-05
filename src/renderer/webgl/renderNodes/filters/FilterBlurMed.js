@@ -32,6 +32,20 @@ var FilterBlurMed = new Class({
         BaseFilterShader.call(this, 'FilterBlurMed', manager, null, ShaderSourceFS);
     },
 
+    /**
+     * Sets the WebGL shader uniforms required by the blur fragment shader.
+     *
+     * Called once per render pass before the blur is drawn. It uploads the
+     * current render target dimensions as `resolution`, the blur spread
+     * amount as `strength`, the tint as `color`, and the directional
+     * blur axis as `offset` (a two-component vector containing the
+     * horizontal and vertical offset values from the controller).
+     *
+     * @method Phaser.Renderer.WebGL.RenderNodes.FilterBlurMed#setupUniforms
+     * @since 4.0.0
+     * @param {Phaser.Filters.Blur} controller - The Blur filter controller providing the uniform values.
+     * @param {Phaser.Renderer.WebGL.DrawingContext} drawingContext - The current drawing context, used to read the render target dimensions.
+     */
     setupUniforms: function (controller, drawingContext)
     {
         var programManager = this.programManager;

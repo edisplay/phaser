@@ -7,7 +7,7 @@
 var WEBGL_CONST = {
 
     /**
-     * 	8-bit twos complement signed integer.
+     * 8-bit twos complement signed integer.
      *
      * @name Phaser.Renderer.WebGL.BYTE
      * @type {Phaser.Types.Renderer.WebGL.WebGLConst}

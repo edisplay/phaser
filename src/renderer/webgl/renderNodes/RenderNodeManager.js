@@ -76,7 +76,21 @@ var YieldContext = require('./YieldContext');
  */
 
 /**
- * Provides and manages the nodes in the rendering graph.
+ * The RenderNodeManager creates, stores, and provides access to all RenderNode
+ * instances used by the WebGL renderer. Render nodes are the fundamental units
+ * of the WebGL rendering pipeline — each node is responsible for a specific
+ * rendering task, such as batching sprites, applying post-processing filters,
+ * compositing layered render lists, transforming geometry, or managing WebGL
+ * drawing contexts. The manager lazily constructs built-in nodes on first
+ * request via `getNode` and caches them for reuse. Custom nodes and
+ * constructors can be registered with `addNode` and `addNodeConstructor`.
+ *
+ * The manager also tracks the currently active batch node so that an
+ * in-progress batch can be flushed automatically when a different rendering
+ * operation begins, controls the `maxParallelTextureUnits` limit used to tune
+ * multi-texture batching performance on desktop and mobile, and provides an
+ * optional debug mode that captures a single frame's complete render graph as
+ * a tree structure inspectable via `debugToString`.
  *
  * @class RenderNodeManager
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -398,7 +412,7 @@ var RenderNodeManager = new Class({
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.RenderNodeManager#setMaxParallelTextureUnits
      * @since 4.0.0
-     * @param {number} [value] - The new value for `maxParallelTextureUnits`. If not provided, it will be set to the renderer's `maxTextures`.
+     * @param {number} [value] - The new value for `maxParallelTextureUnits`. Must be a number; it will be clamped to the range [1, renderer.maxTextures].
      * @fires Phaser.Renderer.Events#SET_PARALLEL_TEXTURE_UNITS
      */
     setMaxParallelTextureUnits: function (value)

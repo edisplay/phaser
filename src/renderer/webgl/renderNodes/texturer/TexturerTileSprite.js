@@ -12,8 +12,12 @@ var RenderNode = require('../RenderNode');
  * @classdesc
  * A RenderNode which handles texturing for a single TileSprite GameObject.
  *
- * This node stores values relevant to texturing, such as UVs and frame data.
- * These values should be read off before the node is reused.
+ * Unlike a standard sprite texturer, this node computes a UV transformation
+ * matrix that accounts for the TileSprite's tile position, tile scale, and
+ * tile rotation, allowing the texture to scroll, scale, and rotate
+ * independently of the GameObject's own transform. It stores the resulting
+ * frame data and UV matrix so they can be consumed by a subsequent render
+ * node before this node is reused.
  *
  * @class TexturerTileSprite
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -49,8 +53,13 @@ var TexturerTileSprite = new Class({
     },
 
     /**
-     * Set this RenderNode to temporarily store the texture data for the given
-     * GameObject. Ensure that it is used before the node is reused.
+     * Populates this RenderNode with texture data for the given TileSprite
+     * GameObject. Stores the frame and computes the UV transformation matrix
+     * by applying the tile position, tile scale, and tile rotation in TSR order,
+     * then mapping the result to the GameObject's display area. If the
+     * GameObject is cropped, the crop UVs are updated first to account for any
+     * flip state change. The stored values must be consumed before this node
+     * is reused.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.TexturerTileSprite#run
      * @since 4.0.0

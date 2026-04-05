@@ -9,7 +9,12 @@ var RenderNode = require('./RenderNode');
 
 /**
  * @classdesc
- * A RenderNode which renders a filled triangle.
+ * A RenderNode which renders a single filled triangle with per-vertex tint colors.
+ * It is used internally by Phaser to draw flat-colored triangles, such as those
+ * produced by the Graphics Game Object when filling shapes. Each of the three
+ * vertices can carry an independent packed ARGB tint color, allowing smooth color
+ * gradients across the triangle face. An optional transform matrix can be supplied
+ * to position the triangle within the world before it is submitted to the GPU batch.
  *
  * @class FillTri
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -41,7 +46,11 @@ var FillTri = new Class({
     },
 
     /**
-     * Render the triangle.
+     * Batches a filled triangle for rendering in the current drawing context.
+     * The three vertices are optionally transformed by `currentMatrix` before
+     * being passed to `submitterNode`, which writes them into the GPU vertex
+     * batch. Per-vertex tint colors allow the triangle to display a smooth color
+     * gradient across its surface.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.FillTri#run
      * @since 4.0.0
@@ -54,9 +63,9 @@ var FillTri = new Class({
      * @param {number} yB - The y-coordinate of the second vertex.
      * @param {number} xC - The x-coordinate of the third vertex.
      * @param {number} yC - The y-coordinate of the third vertex.
-     * @param {number} tintA - The tint color of the first vertex.
-     * @param {number} tintB - The tint color of the second vertex.
-     * @param {number} tintC - The tint color of the third vertex.
+     * @param {number} tintA - The tint color of the first vertex, as a packed ARGB integer.
+     * @param {number} tintB - The tint color of the second vertex, as a packed ARGB integer.
+     * @param {number} tintC - The tint color of the third vertex, as a packed ARGB integer.
      * @param {boolean} lighting - Whether to apply lighting effects to the triangle.
      */
     run: function (drawingContext, currentMatrix, submitterNode, xA, yA, xB, yB, xC, yC, tintA, tintB, tintC, lighting)

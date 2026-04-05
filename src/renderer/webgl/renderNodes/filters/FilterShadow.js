@@ -11,8 +11,12 @@ var ShaderSourceFS = require('../../shaders/FilterShadow-frag.js');
 
 /**
  * @classdesc
- * This RenderNode renders the Shadow filter effect.
- * See {@link Phaser.Filters.Shadow}.
+ * This RenderNode renders the Shadow filter effect, producing a directional
+ * light-ray glow that emanates from a light source position toward the Game
+ * Object. It uploads all shader uniforms required by the Shadow fragment
+ * shader, including the light position (converted to WebGL UV space), decay,
+ * power, color, sample count, and intensity values sourced from the
+ * {@link Phaser.Filters.Shadow} controller.
  *
  * @class FilterShadow
  * @extends Phaser.Renderer.WebGL.RenderNodes.BaseFilterShader
@@ -29,6 +33,20 @@ var FilterShadow = new Class({
         BaseFilterShader.call(this, 'FilterShadow', manager, null, ShaderSourceFS);
     },
 
+    /**
+     * Sets the shader uniforms for the Shadow filter effect.
+     *
+     * This method is called automatically before rendering. It reads values
+     * from the Shadow filter controller and uploads them to the WebGL program,
+     * including the light source position (with the Y axis inverted to match
+     * WebGL UV coordinates), decay, power (normalized by sample count), shadow
+     * color, sample count, and intensity.
+     *
+     * @method Phaser.Renderer.WebGL.RenderNodes.FilterShadow#setupUniforms
+     * @since 4.0.0
+     * @param {Phaser.Filters.Shadow} controller - The Shadow filter controller providing the uniform values.
+     * @param {Phaser.Renderer.WebGL.DrawingContext} drawingContext - The current drawing context.
+     */
     setupUniforms: function (controller, drawingContext)
     {
         var programManager = this.programManager;

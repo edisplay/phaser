@@ -15,7 +15,7 @@ var TransformMatrix = require('../../gameobjects/components/TransformMatrix');
 module.exports = {
 
     /**
-     * Packs four floats on a range from 0.0 to 1.0 into a single Uint32
+     * Packs four floats in a range from 0.0 to 1.0 into a single Uint32
      *
      * @function Phaser.Renderer.WebGL.Utils.getTintFromFloats
      * @since 3.0.0
@@ -39,7 +39,7 @@ module.exports = {
 
     /**
      * Packs a Uint24, representing RGB components, with a Float32, representing
-     * the alpha component, with a range between 0.0 and 1.0 and return a Uint32
+     * the alpha component, with a range between 0.0 and 1.0 and returns a Uint32
      *
      * @function Phaser.Renderer.WebGL.Utils.getTintAppendFloatAlpha
      * @since 3.0.0
@@ -58,8 +58,8 @@ module.exports = {
 
     /**
      * Packs a Uint24, representing RGB components, with a Float32, representing
-     * the alpha component, with a range between 0.0 and 1.0 and return a
-     * swizzled Uint32
+     * the alpha component, with a range between 0.0 and 1.0 and returns a
+     * swizzled Uint32 with the red and blue channels exchanged (RGB becomes BGR)
      *
      * @function Phaser.Renderer.WebGL.Utils.getTintAppendFloatAlphaAndSwap
      * @since 3.0.0
@@ -80,7 +80,7 @@ module.exports = {
     },
 
     /**
-     * Unpacks a Uint24 RGB into an array of floats of ranges of 0.0 and 1.0
+     * Unpacks a Uint24 RGB into an array of floats with values in the range 0.0 to 1.0
      *
      * @function Phaser.Renderer.WebGL.Utils.getFloatsFromUintRGB
      * @since 3.0.0
@@ -100,7 +100,7 @@ module.exports = {
 
     /**
      * Check to see how many texture units the GPU supports in a fragment shader
-     * and if the value specific in the game config is allowed.
+     * and if the value specified in the game config is allowed.
      *
      * This value is hard-clamped to 16 for performance reasons on Android devices.
      *
@@ -131,8 +131,17 @@ module.exports = {
     },
 
     /**
-     * Update lighting uniforms for a given shader program manager.
-     * This is a standard procedure for most lighting shaders.
+     * Sets or clears all lighting-related uniforms on the given shader program manager.
+     *
+     * When `enable` is `true`, this function queries the Scene's Light Manager for all
+     * active lights visible to the camera and uploads their positions, colors, intensities,
+     * and radii as uniform arrays to the shader. It also uploads the ambient light color,
+     * camera transform, and the normal map texture unit. Optionally enables self-shadowing
+     * by uploading the penumbra and diffuse threshold uniforms.
+     *
+     * When `enable` is `false`, all previously set lighting uniforms are removed from the
+     * program manager. If the Scene has no active Light Manager, the function returns early
+     * without making any changes.
      *
      * @function Phaser.Renderer.WebGL.Utils.updateLightingUniforms
      * @since 4.0.0

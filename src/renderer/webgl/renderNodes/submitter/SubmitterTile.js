@@ -9,7 +9,12 @@ var SubmitterQuad = require('./SubmitterQuad');
 
 /**
  * @classdesc
- * The SubmitterTile RenderNode submits data for tiles.
+ * A specialized RenderNode that extends SubmitterQuad to handle the submission
+ * of tile rendering data to the WebGL batch handler. It is used internally by
+ * Tilemap layers to render individual tiles. Unlike the base SubmitterQuad,
+ * SubmitterTile enables frame clamping (`clampFrame = true`) on its render
+ * options, which prevents texture bleeding between adjacent tiles that share a
+ * tileset texture atlas.
  *
  * @class SubmitterTile
  * @extends Phaser.Renderer.WebGL.RenderNodes.SubmitterQuad
@@ -42,7 +47,12 @@ var SubmitterTile = new Class({
     },
 
     /**
-     * Submit data for rendering.
+     * Submits rendering data for a single tile to the WebGL batch handler.
+     * Optionally executes the texturer, transformer, and tinter nodes to resolve
+     * texture coordinates, transformed quad geometry, and per-corner tint colors.
+     * If no tinter node is provided, the tile is rendered without tinting using
+     * a full white (0xffffffff) color. The resolved data is then passed to the
+     * appropriate batch handler for GPU submission.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.SubmitterTile#run
      * @since 4.0.0

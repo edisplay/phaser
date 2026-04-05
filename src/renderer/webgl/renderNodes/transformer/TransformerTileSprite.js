@@ -9,7 +9,22 @@ var TransformerImage = require('./TransformerImage.js');
 
 /**
  * @classdesc
- * A RenderNode which handles transformation data for a single TileSprite GameObject.
+ * A RenderNode that computes and stores the world-space transformation data
+ * required to render a TileSprite GameObject.
+ *
+ * This class extends `TransformerImage` with one key difference: whereas
+ * `TransformerImage` derives the quad dimensions from the texture frame,
+ * `TransformerTileSprite` reads them directly from the GameObject's `width`
+ * and `height` properties. This is necessary because a TileSprite can have
+ * an arbitrary size that is independent of its underlying tile texture.
+ *
+ * During its `run` call, the node builds a combined camera-and-sprite
+ * transform matrix (accounting for scroll factors, an optional parent matrix,
+ * rotation, scale, and flip), projects the GameObject's bounding quad into
+ * screen space, and optionally rounds the resulting vertices for crisp
+ * pixel-aligned rendering. The resulting quad coordinates are stored on
+ * `this.quad` for use by downstream render nodes (e.g. texturer and batcher
+ * nodes) in the same render pass.
  *
  * @class TransformerTileSprite
  * @memberof Phaser.Renderer.WebGL.RenderNodes
@@ -33,7 +48,16 @@ var TransformerTileSprite = new Class({
     },
 
     /**
-     * Stores the transform data for rendering.
+     * Computes the screen-space quad for a TileSprite GameObject and stores
+     * it in `this.quad` for use by downstream render nodes.
+     *
+     * The method reads the GameObject's own `width` and `height` (rather than
+     * frame dimensions), applies the display origin offset, handles horizontal
+     * and vertical flipping, then builds a combined transform matrix from the
+     * camera view, the optional parent matrix, and the sprite's own position,
+     * rotation, and scale. The resulting four corner coordinates are written
+     * into `this.quad`, and are pixel-rounded if vertex rounding is required
+     * for this GameObject and camera combination.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.TransformerTileSprite#run
      * @since 4.0.0

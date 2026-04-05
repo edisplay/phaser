@@ -10,9 +10,16 @@ var Class = require('../../../utils/Class');
  * @classdesc
  * Wrapper for a WebGL Vertex Array Object (VAO).
  *
- * A WebGLVertexArrayObject should never be exposed outside the WebGLRenderer,
- * so the WebGLRenderer can handle context loss and other events without other
- * systems having to be aware of it. Always use WebGLVAOWrapper instead.
+ * A VAO stores the complete vertex attribute configuration for a draw call,
+ * including attribute pointer definitions, enabled attribute arrays, and the
+ * bound element array buffer. Binding a VAO before drawing restores all of
+ * this state in a single call, reducing the number of WebGL API calls needed
+ * per frame.
+ *
+ * A raw WebGLVertexArrayObject should never be exposed outside the
+ * WebGLRenderer, so the WebGLRenderer can handle context loss and other
+ * events without other systems having to be aware of it.
+ * Always use WebGLVAOWrapper instead.
  *
  * @class WebGLVAOWrapper
  * @memberof Phaser.Renderer.WebGL.Wrappers
@@ -93,7 +100,17 @@ var WebGLVAOWrapper = new Class({
     },
 
     /**
-     * Creates a new WebGLVertexArrayObject.
+     * Creates a new WebGLVertexArrayObject and records the full vertex
+     * attribute configuration into it. This includes binding the optional
+     * index buffer, enabling each vertex attribute array, setting up the
+     * attribute pointers (including per-column pointers for matrix
+     * attributes), and applying instance divisors for instanced rendering.
+     * Once the VAO is fully configured it is unbound, along with any array
+     * and element-array buffers, to leave the WebGL state clean.
+     *
+     * This method is called automatically by the constructor. It is also
+     * called by the WebGLRenderer when the WebGL context is restored after
+     * a context loss event.
      *
      * @method Phaser.Renderer.WebGL.Wrappers.WebGLVAOWrapper#createResource
      * @since 4.0.0

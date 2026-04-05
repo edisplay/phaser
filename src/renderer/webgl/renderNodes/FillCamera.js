@@ -9,7 +9,18 @@ var RenderNode = require('./RenderNode');
 
 /**
  * @classdesc
- * A RenderNode which fills a camera with a color.
+ * A RenderNode that fills the viewport of a camera with a solid color, used
+ * to render a camera's background color before any game objects are drawn.
+ *
+ * This node is invoked during the WebGL render pipeline whenever a camera has
+ * a background color set. It delegates the actual drawing to the `FillRect`
+ * RenderNode, which means the fill is submitted as a batched quad rather than
+ * a standalone draw call, keeping it efficient.
+ *
+ * For cameras that render to a framebuffer (render textures), the camera's
+ * screen position is ignored and the fill is drawn at the origin of the
+ * framebuffer instead, since the framebuffer itself will be composited into
+ * the main scene at the correct position.
  *
  * @class FillCamera
  * @memberof Phaser.Renderer.WebGL.RenderNodes

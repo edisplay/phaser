@@ -8,9 +8,18 @@ var Class = require('../../../utils/Class');
 
 /**
  * @classdesc
- * This class stores data necessary for setting WebGL shader uniforms
- * and attributes. Most of it is static. Its purpose as a class is to
- * load the WebGL functions provided by the rendering context.
+ * Stores the metadata and WebGL function references needed to set shader
+ * uniform values for every GLSL data type. The core of the class is the
+ * `constants` map, which is keyed by WebGL type constant (e.g. `gl.FLOAT`,
+ * `gl.FLOAT_VEC2`, `gl.FLOAT_MAT4`) and provides the corresponding uniform
+ * setter function, element count, byte size, and matrix flag for each type.
+ *
+ * Because the WebGL uniform setter functions (`gl.uniform1f`, `gl.uniform2i`,
+ * etc.) are bound to the rendering context at construction time, this class
+ * exists primarily to capture those function references once and make them
+ * available throughout the lifetime of the renderer. It is created by the
+ * `WebGLRenderer` and used internally when uploading uniform data to GPU
+ * shader programs.
  *
  * @class WebGLShaderSetterWrapper
  * @memberof Phaser.Renderer.WebGL.Wrappers
@@ -25,7 +34,11 @@ var WebGLShaderSetterWrapper = new Class({
         var gl = renderer.gl;
 
         /**
-         * Map of GL Constants to their setter functions and relevant data sizes.
+         * A lookup table keyed by WebGL type constant (hex value) that maps each
+         * GLSL data type to its uniform setter functions, component count, byte
+         * size per component, and a flag indicating whether the type is a matrix.
+         * Used when uploading uniform values to a shader program so the correct
+         * WebGL call is chosen automatically for each uniform's declared type.
          *
          * @name Phaser.Renderer.WebGL.Wrappers.WebGLShaderSetterWrapper#constants
          * @type {Phaser.Types.Renderer.WebGL.Wrappers.ShaderSetterConstants}

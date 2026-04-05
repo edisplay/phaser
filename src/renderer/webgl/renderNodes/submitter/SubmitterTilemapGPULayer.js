@@ -22,10 +22,15 @@ var Utils = require('../../Utils');
 
 /**
  * @classdesc
- * The SubmitterTilemapGPULayer RenderNode handles rendering of
- * TilemapGPULayer objects.
+ * The SubmitterTilemapGPULayer RenderNode handles GPU-accelerated rendering
+ * of TilemapGPULayer objects in the WebGL renderer.
  *
- * It is a Stand Alone Render, meaning that it does not batch.
+ * Unlike batch-based submitters, this is a Stand Alone Render, meaning each
+ * layer is drawn in its own draw call. It manages its own shader program
+ * via a ProgramManager, which supports several optional shader features
+ * including smooth pixel art upscaling, normal-mapped lighting, animated
+ * tiles, self-shadowing, and bilinear border filtering. The appropriate
+ * shader variant is selected each frame based on the layer's configuration.
  *
  * @class SubmitterTilemapGPULayer
  * @extends Phaser.Renderer.WebGL.RenderNodes.RenderNode
@@ -70,7 +75,7 @@ var SubmitterTilemapGPULayer = new Class({
         /**
          * The vertex buffer layout for this RenderNode.
          *
-         * This consists of 4 bytes, 0-3, forming corners of a quad instance.
+         * This consists of 4 vertices (indexed 0-3), one per corner of the quad.
          *
          * @name Phaser.Renderer.WebGL.RenderNodes.SubmitterTilemapGPULayer#vertexBufferLayout
          * @type {Phaser.Renderer.WebGL.Wrappers.WebGLVertexBufferLayoutWrapper}
@@ -247,7 +252,13 @@ var SubmitterTilemapGPULayer = new Class({
     },
 
     /**
-     * Set up uniforms for rendering.
+     * Populates all shader uniforms required to render the given TilemapGPULayer.
+     *
+     * This includes the viewport resolution and projection matrix, the tileset
+     * image texture, the layer data texture, the animation data texture, tile
+     * dimensions (width, height, margin, and spacing), the layer's alpha and
+     * elapsed time for animation, and any lighting uniforms when the layer has
+     * lighting enabled.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.SubmitterTilemapGPULayer#setupUniforms
      * @since 4.0.0
@@ -336,9 +347,16 @@ var SubmitterTilemapGPULayer = new Class({
     },
 
     /**
-     * Update render options for a TilemapGPULayer object.
-     * This may use a different shader program.
-     * This is called before rendering the object.
+     * Evaluates the current state of the TilemapGPULayer and updates the
+     * shader program configuration accordingly. This is called before each
+     * render and may result in a different shader variant being selected.
+     *
+     * Specifically, it configures: the animation length addition (based on the
+     * tileset's maximum animation frame count), lighting additions (enabled or
+     * disabled based on the layer's lighting setting, with the light count
+     * define updated when active), the self-shadow feature flag, the smooth
+     * pixel art addition, and the border filter feature flag (based on whether
+     * the tileset texture uses linear magnification filtering).
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.SubmitterTilemapGPULayer#updateRenderOptions
      * @since 4.0.0
@@ -425,7 +443,13 @@ var SubmitterTilemapGPULayer = new Class({
     },
 
     /**
-     * Render a TilemapGPULayer object.
+     * The main render entry point for a TilemapGPULayer. Transforms the layer
+     * quad using the camera view matrix and any parent transform, writes the
+     * four corner positions and texture coordinates into the vertex buffer,
+     * assembles the texture array (tileset image, layer data, optional
+     * animation data, and optional normal map for lighting), selects the
+     * correct shader variant via `updateRenderOptions`, populates all uniforms
+     * via `setupUniforms`, and issues a single draw call for the layer.
      *
      * @method Phaser.Renderer.WebGL.RenderNodes.SubmitterTilemapGPULayer#run
      * @since 4.0.0

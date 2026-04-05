@@ -7,9 +7,17 @@
 var DefineBlockyTexCoord = require('../DefineBlockyTexCoord-glsl');
 
 /**
- * Returns a ShaderAdditionConfig for implementing smooth pixel art.
- * This uses the Standard Derivatives extension to WebGL
- * to render antialiased, uninterpolated texels.
+ * Creates and returns a ShaderAdditionConfig that enables smooth pixel art rendering.
+ *
+ * When applied to a shader, this addition replaces standard texture coordinate
+ * interpolation with a blocky sampling method that preserves crisp pixel edges
+ * while applying sub-pixel anti-aliasing at texel boundaries. The result is that
+ * pixel art assets scaled up or rendered at non-integer scales retain sharp,
+ * clean edges rather than the blurriness introduced by bilinear filtering.
+ *
+ * Internally this uses the `GL_OES_standard_derivatives` WebGL extension to
+ * compute per-fragment derivative information, which drives the anti-aliased
+ * edge blending via the `getBlockyTexCoord` GLSL helper.
  *
  * @function Phaser.Renderer.WebGL.ShaderAdditionMakers.MakeSmoothPixelArt
  * @since 4.0.0

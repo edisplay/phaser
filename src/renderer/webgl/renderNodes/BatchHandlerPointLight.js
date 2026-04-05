@@ -11,7 +11,17 @@ var BatchHandler = require('./BatchHandler');
 
 /**
  * @classdesc
- * This RenderNode draws PointLight Game Objects in WebGL.
+ * A batch handler RenderNode that renders `PointLight` Game Objects using WebGL.
+ *
+ * Each PointLight is submitted as a textured quad (4 vertices, 6 indices) into
+ * a shared vertex buffer. The dedicated point-light shader computes the radial
+ * light falloff per fragment, using the light's world position, radius,
+ * attenuation factor, colour, and intensity. Multiple lights are batched
+ * together and flushed in a single draw call when the batch is full or when
+ * the renderer needs to switch context.
+ *
+ * This handler uses no textures; it passes an empty texture array to the
+ * draw call because the lighting is calculated entirely in the fragment shader.
  *
  * @class BatchHandlerPointLight
  * @extends Phaser.Renderer.WebGL.RenderNodes.BatchHandler
@@ -215,6 +225,8 @@ var BatchHandlerPointLight = new Class({
      * @param {number} yTR - The top-right y-coordinate of the light.
      * @param {number} xBR - The bottom-right x-coordinate of the light.
      * @param {number} yBR - The bottom-right y-coordinate of the light.
+     * @param {number} lightX - The world x-coordinate of the light's centre, used by the shader to calculate radial falloff.
+     * @param {number} lightY - The world y-coordinate of the light's centre, used by the shader to calculate radial falloff.
      */
     batch: function (drawingContext, light, xTL, yTL, xBL, yBL, xTR, yTR, xBR, yBR, lightX, lightY)
     {

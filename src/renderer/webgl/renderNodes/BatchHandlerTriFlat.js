@@ -16,7 +16,20 @@ var BatchHandler = require('./BatchHandler');
 
 /**
  * @classdesc
- * This render node draws triangles with vertex color in batches.
+ * A render node that draws flat-shaded triangles with per-vertex color in
+ * batches, using the WebGL renderer. Unlike texture-based batch handlers,
+ * this node requires no texture data — each vertex carries only a position
+ * and a packed RGBA tint color. It is used to render untextured geometry such
+ * as Graphics objects and other filled or stroked shapes.
+ *
+ * Triangles are submitted via the `batch` method as a set of vertex positions,
+ * per-vertex colors, and an index array that groups vertices into triangles.
+ * The node accumulates these into a dynamic vertex buffer and index buffer,
+ * flushing automatically when the batch is full or when render state changes.
+ *
+ * Optionally supports dynamic lighting: when a lighting configuration is
+ * provided, the node switches to a lighting-enabled shader variant and uploads
+ * the necessary light uniforms each frame.
  *
  * @class BatchHandlerTriFlat
  * @extends Phaser.Renderer.WebGL.RenderNodes.BatchHandler
@@ -180,6 +193,18 @@ var BatchHandlerTriFlat = new Class({
         }
     },
 
+    /**
+     * Compare the incoming render options against the current batch's render
+     * options and record whether they have changed. If the lighting value
+     * differs from the one used to build the current batch, the change is
+     * staged in `nextRenderOptions` and `_renderOptionsChanged` is set to
+     * `true`, signalling that the batch must be flushed and the shader
+     * reconfigured before new geometry is added.
+     *
+     * @method Phaser.Renderer.WebGL.RenderNodes.BatchHandlerTriFlat#updateRenderOptions
+     * @since 4.0.0
+     * @param {object|false} lighting - The lighting configuration for the next draw call, or `false` if lighting is disabled.
+     */
     updateRenderOptions: function (lighting)
     {
         var newRenderOptions = this.nextRenderOptions;
@@ -195,6 +220,18 @@ var BatchHandlerTriFlat = new Class({
         this._renderOptionsChanged = changed;
     },
 
+    /**
+     * Apply any pending render option changes to the shader program. This
+     * method is called after the current batch has been flushed, when
+     * `_renderOptionsChanged` is `true`. It synchronises `renderOptions` with
+     * `nextRenderOptions` and enables or disables the lighting shader
+     * additions accordingly. When lighting is enabled it also updates the
+     * `LIGHT_COUNT` preprocessor define to match the renderer's configured
+     * maximum number of lights.
+     *
+     * @method Phaser.Renderer.WebGL.RenderNodes.BatchHandlerTriFlat#updateShaderConfig
+     * @since 4.0.0
+     */
     updateShaderConfig: function ()
     {
         var programManager = this.programManager;

@@ -11,10 +11,23 @@ var BaseFilter = require('./BaseFilter');
 
 /**
  * @classdesc
- * This RenderNode runs a series of filters in parallel.
- * See {@link Phaser.Filters.ParallelFilters}.
+ * A RenderNode that processes two independent filter chains — a bottom layer
+ * and a top layer — each applied to the same input, then composites their
+ * results together using a configurable blend mode. This allows you to combine
+ * two completely different filter effects on a single Game Object; for example,
+ * applying a glow to the bottom layer and a color correction to the top layer,
+ * then merging them with an add or multiply blend.
  *
- * This filter redirects to other RenderNodes during operation.
+ * Each layer (bottom and top) runs its own ordered chain of filters in series,
+ * where the output of one filter feeds into the next. Once both chains have
+ * completed, the results are blended using the `FilterBlend` RenderNode
+ * according to the controller's blend settings.
+ *
+ * If neither layer contains any active filters, the input is copied directly
+ * to the output with no modifications.
+ *
+ * This node delegates rendering work to other RenderNodes during execution.
+ * See {@link Phaser.Filters.ParallelFilters} for the associated controller.
  *
  * @class FilterParallelFilters
  * @extends Phaser.Renderer.WebGL.RenderNodes.BaseFilter
@@ -31,6 +44,28 @@ var FilterParallelFilters = new Class({
         BaseFilter.call(this, 'FilterParallelFilters', manager);
     },
 
+    /**
+     * Runs the parallel filter process. The input drawing context is passed
+     * through the bottom filter chain and the top filter chain independently,
+     * producing two separately filtered results. Those results are then blended
+     * together using the `FilterBlend` RenderNode with the blend mode and
+     * settings defined on the controller.
+     *
+     * Padding is applied on the first filter in each chain only; subsequent
+     * filters in the same chain receive zero padding to avoid double-expanding
+     * the output bounds.
+     *
+     * If no filters are active on either layer, the input is copied directly
+     * to the output unchanged.
+     *
+     * @method Phaser.Renderer.WebGL.RenderNodes.FilterParallelFilters#run
+     * @since 4.0.0
+     * @param {Phaser.Filters.ParallelFilters} controller - The controller that defines the bottom and top filter chains and their blend settings.
+     * @param {Phaser.Renderer.WebGL.DrawingContext} inputDrawingContext - The drawing context to use as the source image for both filter chains.
+     * @param {Phaser.Renderer.WebGL.DrawingContext} outputDrawingContext - The drawing context to render the final blended result into. May be `null`, in which case a new context is allocated.
+     * @param {Phaser.Geom.Rectangle} padding - The padding to apply around the rendered area on the first filter pass.
+     * @return {Phaser.Renderer.WebGL.DrawingContext} The drawing context containing the final composited output.
+     */
     run: function (controller, inputDrawingContext, outputDrawingContext, padding)
     {
         this.onRunBegin(outputDrawingContext);

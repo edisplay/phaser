@@ -7,9 +7,13 @@
 var ApplyLighting = require('../ApplyLighting-glsl');
 
 /**
- * Return a ShaderAdditionConfig for applying lighting to a texture.
+ * Creates and returns a `ShaderAdditionConfig` that injects normal-map
+ * lighting into a WebGL shader pipeline. When added to a renderer, it
+ * includes the `ApplyLighting` GLSL header in the fragment shader and
+ * runs `applyLighting(fragColor, normal)` during the fragment process
+ * stage, blending the lighting result into the output color.
  *
- * The `rotation` variable must be available in the vertex renderer.
+ * The `normal` variable must be available in the fragment shader.
  *
  * @function Phaser.Renderer.WebGL.ShaderAdditionMakers.MakeApplyLighting
  * @since 4.0.0
