@@ -9,8 +9,10 @@ require('./polyfills/requestVideoFrame');
 var CONST = require('./const');
 var Extend = require('./utils/object/Extend');
 
+
 /**
- * @namespace Phaser
+ * Alternative Phaser entry-point for the no-physics build. Doesn't include Arcade or Matter physics.
+ * See phaser.js for the JSDocs entry point.
  */
 
 var Phaser = {
@@ -61,21 +63,8 @@ if (typeof FEATURE_SOUND)
 
 Phaser = Extend(false, Phaser, CONST);
 
-/**
- * The root types namespace.
- *
- * @namespace Phaser.Types
- * @since 3.17.0
- */
-
 //  Export it
 
 module.exports = Phaser;
 
 global.Phaser = Phaser;
-
-/*
- * "Documentation is like pizza: when it is good, it is very, very good;
- * and when it is bad, it is better than nothing."
- *  -- Dick Brandon
- */
