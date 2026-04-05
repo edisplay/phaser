@@ -12,7 +12,14 @@ var FuzzyEqual = require('../math/fuzzy/Equal');
 
 /**
  * @classdesc
- * A representation of a vector in 2D space.
+ * A representation of a vector in 2D space, defined by an `x` and `y` component.
+ *
+ * Vector2 is used throughout Phaser for positions, directions, velocities, and other
+ * quantities that have both magnitude and direction. It provides methods for common
+ * vector operations such as addition, subtraction, scaling, normalization, dot and
+ * cross products, linear interpolation, and rotation. Many Phaser APIs accept a
+ * `Vector2Like` object (any object with `x` and `y` number properties), making
+ * Vector2 easy to integrate across the framework.
  *
  * @class Vector2
  * @memberof Phaser.Math
@@ -112,7 +119,7 @@ var Vector2 = new Class({
     },
 
     /**
-     * Set the `x` and `y` components of the this Vector to the given `x` and `y` values.
+     * Set the `x` and `y` components of this Vector to the given `x` and `y` values.
      *
      * @method Phaser.Math.Vector2#set
      * @since 3.0.0
@@ -605,7 +612,7 @@ var Vector2 = new Class({
     },
 
     /**
-     * Transform this Vector with the given Matrix.
+     * Transform this Vector with the given Matrix3.
      *
      * @method Phaser.Math.Vector2#transformMat3
      * @since 3.0.0
@@ -627,7 +634,7 @@ var Vector2 = new Class({
     },
 
     /**
-     * Transform this Vector with the given Matrix.
+     * Transform this Vector with the given Matrix4.
      *
      * @method Phaser.Math.Vector2#transformMat4
      * @since 3.0.0

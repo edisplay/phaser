@@ -35,7 +35,7 @@ var Hash = require('./Hash');
  * Performance note: A 16ms frame has enough time to generate
  * a few hundred hash values, depending on device and workload.
  *
- * See {@see Phaser.Math.Hash} for more information on the hashing algorithms.
+ * See {@link Phaser.Math.Hash} for more information on the hashing algorithms.
  *
  * @function Phaser.Math.HashCell
  * @since 4.0.0
@@ -43,7 +43,7 @@ var Hash = require('./Hash');
  * @param {number|number[]} vector - The input vector to hash. 1 to 4 numbers.
  * @param {Phaser.Types.Math.HashCellConfig} [config] - The configuration of the noise cell field.
  *
- * @return {number} The hashed cellular noise value, between 0 and 1.
+ * @return {number} The hashed cellular noise value. The range increases with the number of input dimensions, as it represents the distance to the nearest distorted cell center.
  */
 var HashCell = function (vector, config)
 {

@@ -7,8 +7,12 @@
 var Vector2 = require('./Vector2');
 
 /**
- * Takes the `x` and `y` coordinates and transforms them into the same space as
- * defined by the position, rotation and scale values.
+ * Takes the `x` and `y` coordinates and transforms them into the local coordinate
+ * space defined by the given position, rotation, and scale values. This performs
+ * an inverse transformation, converting a point from world space into the equivalent
+ * local-space coordinates of a Game Object or other transformed entity. This is
+ * useful for hit-testing or pointer input when you need to determine where a
+ * world-space point falls within a transformed object's local coordinate system.
  *
  * @function Phaser.Math.TransformXY
  * @since 3.0.0

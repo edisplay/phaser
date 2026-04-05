@@ -11,9 +11,14 @@ var Class = require('../utils/Class');
 
 /**
  * @classdesc
- * A representation of a vector in 4D space.
+ * A four-component vector (x, y, z, w) for use in 3D mathematics and transformations.
  *
- * A four-component vector.
+ * Vector4 is commonly used to represent homogeneous coordinates in 3D space, where the
+ * `w` component acts as a scaling factor, making it compatible with 4x4 matrix multiplication
+ * via `Matrix4`. It is also used to represent RGBA color values, quaternion components, and
+ * any other quantity that requires four independent scalar values. The class supports the
+ * standard vector operations you would expect: addition, subtraction, scaling, normalization,
+ * dot product, linear interpolation, and transformation by both `Matrix4` and `Quaternion` objects.
  *
  * @class Vector4
  * @memberof Phaser.Math

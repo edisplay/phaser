@@ -11,8 +11,8 @@
  * @function Phaser.Math.Pow2.IsSize
  * @since 3.0.0
  *
- * @param {number} width - The width.
- * @param {number} height - The height.
+ * @param {number} width - The width to check, in pixels.
+ * @param {number} height - The height to check, in pixels.
  *
  * @return {boolean} `true` if `width` and `height` are a power of two, otherwise `false`.
  */

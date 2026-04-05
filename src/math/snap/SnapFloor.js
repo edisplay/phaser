@@ -5,7 +5,7 @@
  */
 
 /**
- * Snap a value to nearest grid slice, using floor.
+ * Snap a value to the nearest lower grid slice, using floor.
  *
  * Example: if you have an interval gap of `5` and a position of `12`... you will snap to `10`.
  * As will `14` snap to `10`... but `16` will snap to `15`.

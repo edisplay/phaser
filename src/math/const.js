@@ -7,7 +7,7 @@
 var MATH_CONST = {
 
     /**
-     * The value of PI * 2.
+     * The value of PI * 2, representing a full circle (360 degrees) in radians.
      *
      * @name Phaser.Math.TAU
      * @type {number}
@@ -25,7 +25,7 @@ var MATH_CONST = {
     PI_OVER_2: Math.PI / 2,
 
     /**
-     * An epsilon value (1.0e-6)
+     * A small epsilon value (1.0e-6) used for floating-point comparisons and near-zero checks to avoid precision errors.
      *
      * @name Phaser.Math.EPSILON
      * @type {number}
@@ -34,7 +34,7 @@ var MATH_CONST = {
     EPSILON: 1.0e-6,
 
     /**
-     * For converting degrees to radians (PI / 180)
+     * Conversion factor for degrees to radians (PI / 180). Multiply a degree value by this constant to obtain its equivalent in radians.
      *
      * @name Phaser.Math.DEG_TO_RAD
      * @type {number}
@@ -43,7 +43,7 @@ var MATH_CONST = {
     DEG_TO_RAD: Math.PI / 180,
 
     /**
-     * For converting radians to degrees (180 / PI)
+     * Conversion factor for radians to degrees (180 / PI). Multiply a radian value by this constant to obtain its equivalent in degrees.
      *
      * @name Phaser.Math.RAD_TO_DEG
      * @type {number}

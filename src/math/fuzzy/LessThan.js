@@ -14,7 +14,7 @@
  *
  * @param {number} a - The first value.
  * @param {number} b - The second value.
- * @param {number} [epsilon=0.0001] - The epsilon.
+ * @param {number} [epsilon=0.0001] - The tolerance value used for the fuzzy comparison. Values within this distance are considered equal.
  *
  * @return {boolean} `true` if `a` is fuzzily less than `b`, otherwise `false`.
  */

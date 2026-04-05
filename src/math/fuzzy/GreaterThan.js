@@ -14,7 +14,7 @@
  *
  * @param {number} a - The first value.
  * @param {number} b - The second value.
- * @param {number} [epsilon=0.0001] - The epsilon.
+ * @param {number} [epsilon=0.0001] - The epsilon value used to control the degree of fuzziness. A larger value makes the comparison more lenient.
  *
  * @return {boolean} `true` if `a` is fuzzily greater than `b`, otherwise `false`.
  */

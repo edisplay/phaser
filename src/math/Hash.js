@@ -26,7 +26,7 @@ var Vector4 = require('./Vector4');
  * security/authentication/encryption purposes. Use a proper tool instead.
  *
  * Performance note: A 16ms frame has enough time to generate
- * 10s or 100s of thousands of hash values, depending on system and other activity.
+ * tens or hundreds of thousands of hash values, depending on system and other activity.
  *
  * You can select from different hashing algorithms.
  *

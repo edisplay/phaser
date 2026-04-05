@@ -10,9 +10,9 @@
  * @function Phaser.Math.Easing.Linear
  * @since 3.0.0
  *
- * @param {number} v - The value to be tweened.
+ * @param {number} v - The value to be eased.
  *
- * @return {number} The tweened value.
+ * @return {number} The eased value.
  */
 var Linear = function (v)
 {

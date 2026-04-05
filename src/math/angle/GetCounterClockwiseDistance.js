@@ -10,7 +10,11 @@ var NormalizeAngle = require('./Normalize');
 var TAU = MATH_CONST.TAU;
 
 /**
- * Gets the shortest nonpositive angular distance from angle1 to angle2.
+ * Returns the counter-clockwise angular distance from `angle1` to `angle2`, expressed as a
+ * non-positive value in radians. Counter-clockwise rotation is represented as negative, so the
+ * result is always in the range (-2π, 0]. A result of 0 means the angles are equal or differ
+ * by a full rotation. Use this when you need to measure how far to rotate counter-clockwise to
+ * reach a target angle.
  *
  * @function Phaser.Math.Angle.GetCounterClockwiseDistance
  * @since 4.0.0
@@ -18,7 +22,7 @@ var TAU = MATH_CONST.TAU;
  * @param {number} angle1 - The starting angle in radians.
  * @param {number} angle2 - The target angle in radians.
  *
- * @return {number} The distance in radians, in the range (-2pi, 0].
+ * @return {number} The counter-clockwise distance in radians, in the range (-2π, 0].
  */
 var GetCounterClockwiseDistance = function (angle1, angle2)
 {

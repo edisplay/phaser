@@ -5,14 +5,17 @@
  */
 
 /**
- * Bounce ease-out.
+ * Applies a bounce ease-out effect to the given value. The motion starts fast
+ * and decelerates toward the end with a bouncing effect, simulating a ball
+ * landing and bouncing to a stop. The bounce is achieved through four piecewise
+ * quadratic segments that produce three diminishing bounces before settling.
  *
  * @function Phaser.Math.Easing.Bounce.Out
  * @since 3.0.0
  *
- * @param {number} v - The value to be tweened.
+ * @param {number} v - The value to be eased.
  *
- * @return {number} The tweened value.
+ * @return {number} The eased value.
  */
 var Out = function (v)
 {

@@ -7,7 +7,13 @@
 var SmoothStep = require('../SmoothStep');
 
 /**
- * A Smooth Step interpolation method.
+ * A Smooth Step interpolation method that uses the Smoothstep function to produce a smooth, S-shaped
+ * transition between the `min` and `max` values. Unlike linear interpolation, Smooth Step eases in
+ * and out at both edges, resulting in a gradual start and end to the transition. This makes it
+ * well-suited for animations and transitions where abrupt changes at the boundaries would look unnatural.
+ *
+ * The interpolation parameter `t` is first remapped via the Smoothstep curve (which clamps and applies
+ * a cubic Hermite function), and the result is then used to linearly interpolate between `min` and `max`.
  *
  * @function Phaser.Math.Interpolation.SmoothStep
  * @since 3.9.0

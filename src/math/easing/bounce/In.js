@@ -5,14 +5,18 @@
  */
 
 /**
- * Bounce ease-in.
+ * Applies a bounce easing to the start of the tween. The eased value will
+ * 'bounce' several times near the origin before accelerating toward the target,
+ * simulating the effect of a ball bouncing as it begins to move. This is the
+ * ease-in variant, meaning the bounce effect occurs at the beginning of the
+ * transition rather than the end.
  *
  * @function Phaser.Math.Easing.Bounce.In
  * @since 3.0.0
  *
- * @param {number} v - The value to be tweened.
+ * @param {number} v - The value to be eased, in the range 0 to 1.
  *
- * @return {number} The tweened value.
+ * @return {number} The eased value, in the range 0 to 1.
  */
 var In = function (v)
 {
