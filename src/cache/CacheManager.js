@@ -126,15 +126,6 @@ var CacheManager = new Class({
         this.html = new BaseCache();
 
         /**
-         * A Cache storing all WaveFront OBJ files, typically added via the Loader.
-         *
-         * @name Phaser.Cache.CacheManager#obj
-         * @type {Phaser.Cache.BaseCache}
-         * @since 3.0.0
-         */
-        this.obj = new BaseCache();
-
-        /**
          * A Cache storing all tilemap data files, typically added via the Loader.
          * Only the data is stored in this cache, the textures are part of the Texture Manager.
          *
@@ -152,6 +143,15 @@ var CacheManager = new Class({
          * @since 3.0.0
          */
         this.xml = new BaseCache();
+
+        /**
+         * A Cache storing all Phaser Compact Texture Atlas data files, typically added via the Loader.
+         *
+         * @name Phaser.Cache.CacheManager#atlas
+         * @type {Phaser.Cache.BaseCache}
+         * @since 4.0.0
+         */
+        this.atlas = new BaseCache();
 
         /**
          * An object that contains your own custom BaseCache entries.
