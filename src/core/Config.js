@@ -41,11 +41,9 @@ var Config = new Class({
         if (config === undefined) { config = {}; }
 
         var defaultBannerColor = [
-            '#ff0000',
-            '#ffff00',
-            '#00ff00',
-            '#00ffff',
-            '#000000'
+            '#000814',
+            '#001d3d',
+            '#003566'
         ];
 
         var defaultBannerTextColor = '#ffffff';

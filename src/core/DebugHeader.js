@@ -61,31 +61,30 @@ var DebugHeader = function (game)
 
     if (!game.device.browser.ie)
     {
-        var c = '';
-        var args = [ c ];
+        var logoDataURI = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAOCAYAAAAmL5yKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAARBJREFUeNpi/P//P0OHsPB/BiCoePuWkYFEwALSXJElzMBgLwE2CNkQxgWr/yMr/p8QimlBu5DQ//+8vBBco/ofzAe6imH+qv/53/6jYJAYSA4ZoxoANYTPKhiuCQZwGcJU+e4dqpMmvsDq14krV2MPAxDha2CMKvoXoiE/PBQUDgQD8j82UFae9B9bOIC8B9UD9gIjjIMN7Ns6lWHn4XMoYu62RgxO3tkMjIyMII2MYAOAtmFVhA+ADHf2ycGMRhANjUq8YO+WKWCvgAORIV8CkpDCrzIwsLIymC1qAtuAD4Bsh3sBmqAY3qcGwL2AC4DCpKtzHlgzOLWihwEuzTCN0GhDJHeYC4gByBphACDAAH2dDIxdjr+VAAAAAElFTkSuQmCC';
 
-        if (Array.isArray(config.bannerBackgroundColor))
+        var mainStyle = 'color: ' + config.bannerTextColor + ';';
+
+        var bannerBackgroundColor = Array.isArray(config.bannerBackgroundColor)
+            ? config.bannerBackgroundColor
+            : [ config.bannerBackgroundColor ];
+
+        //  linear-gradient requires at least two color stops, so duplicate if there's only one
+        if (bannerBackgroundColor.length === 1)
         {
-            var lastColor;
-
-            config.bannerBackgroundColor.forEach(function (color)
-            {
-                c = c.concat('%c ');
-
-                args.push('background: ' + color);
-
-                lastColor = color;
-            });
-
-            //  inject the text color
-            args[args.length - 1] = 'color: ' + config.bannerTextColor + '; background: ' + lastColor;
+            bannerBackgroundColor = [ bannerBackgroundColor[0], bannerBackgroundColor[0] ];
         }
-        else
-        {
-            c = c.concat('%c ');
 
-            args.push('color: ' + config.bannerTextColor + '; background: ' + config.bannerBackgroundColor);
-        }
+        var gradient = 'linear-gradient(to bottom, ' + bannerBackgroundColor.join(', ') + ')';
+
+        mainStyle += ' background-image: url("' + logoDataURI + '"), ' + gradient + ';';
+        mainStyle += ' background-repeat: no-repeat;';
+        mainStyle += ' background-position: 4px center, 0 0;';
+
+        mainStyle += ' padding: 2px 6px 2px 24px;';
+
+        var c = '%c';
+        var args = [ null, mainStyle ];
 
         //  URL link background color (always transparent to support different browser themes)
         args.push('background: transparent');
@@ -110,7 +109,7 @@ var DebugHeader = function (game)
             c = c.concat('Phaser v' + CONST.VERSION + ' (' + renderType + ' | ' + audioType + ')');
         }
 
-        c = c.concat(' %c ' + config.gameURL);
+        c = c.concat('%c ' + config.gameURL);
 
         //  Inject the new string back into the args array
         args[0] = c;
