@@ -573,6 +573,40 @@ var TileSprite = new Class({
     },
 
     /**
+     * Sets the size of this TileSprite's output region.
+     *
+     * This does not change the scale.
+     *
+     * If you have enabled this Game Object for input, changing the size will also change the
+     * size of the hit area, unless you have defined a custom hit area.
+     *
+     * @method Phaser.GameObjects.TileSprite#setSize
+     * @since 4.0.0
+     *
+     * @param {number} width - The width of this Game Object.
+     * @param {number} height - The height of this Game Object.
+     *
+     * @return {this} This Game Object instance.
+     */
+    setSize: function (width, height)
+    {
+        this.width = width;
+        this.height = height;
+
+        this.updateDisplayOrigin();
+
+        var input = this.input;
+
+        if (input && !input.customHitArea)
+        {
+            input.hitArea.width = width;
+            input.hitArea.height = height;
+        }
+
+        return this;
+    },
+
+    /**
      * Internal destroy handler, called as part of the destroy process.
      *
      * @method Phaser.GameObjects.TileSprite#preDestroy
