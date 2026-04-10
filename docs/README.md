@@ -1,8 +1,5 @@
-# Phaser Documentation Library
+# Phaser Rendering Documentation
 
-This folder contains articles and guides describing various aspects of Phaser in depth.
+This folder contains articles and guides describing various aspects of Phaser 4 rendering in depth.
 
-When adding new articles:
-
-- Place them inside a new folder. This makes it easier to bundle additional files, such as images, diagrams, and scripts.
-- Name the folder beginning with 'Phaser #' where '#' is the target major version, if the article is relevant to Phaser code. This makes it easy to find up-to-date concepts and review changes over time.
+For the full API documentation please see [docs.phaser.io](https://docs.phaser.io)
