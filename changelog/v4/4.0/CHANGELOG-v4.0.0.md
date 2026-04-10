@@ -1,4 +1,6 @@
-# Phaser 4.0.0 Changelog
+# Phaser 4 Changelog
+
+## Version 4.0.0 - Caladan - 10th April 2026
 
 Phaser v4 is a major release built on a brand-new, highly efficient WebGL renderer. The entire rendering pipeline from Phaser v3 has been replaced with a modern render node architecture that manages WebGL state, supports context restoration, and prioritizes performance. Alongside the new renderer, v4 brings new game objects, a unified filter system replacing both FX and Masks, a rewritten camera system, overhauled tint and shader APIs, a new lighting model, and hundreds of fixes and improvements.
 
@@ -24,7 +26,7 @@ For a step-by-step guide on updating your v3 project, see the [Migration Guide](
     - [Geometry: Point Replaced by Vector2](#geometry-point-replaced-by-vector2)
     - [Math Constants](#math-constants)
     - [Data Structures](#data-structures)
-    - [Removed Game Objects](#removed-game-objects)
+    - [Removed Mesh Game Object](#removed-mesh-gameobject)
     - [Removed Plugins, Entry Points and Polyfills](#removed-plugins-entry-points-and-polyfills)
     - [Other Breaking Changes](#other-breaking-changes)
 2. [New Features](#new-features)
@@ -255,9 +257,15 @@ The `Geom.Point` class and all related functions have been removed. All function
 - `Phaser.Struct.Set` has been replaced with a native JavaScript `Set`. Methods like `iterateLocal` are gone. Use standard `Set` methods instead.
 - `Phaser.Struct.Map` has been replaced with a native JavaScript `Map`. Methods like `contains` and `setAll` are gone. Use standard `Map` methods instead.
 
-### Removed Game Objects
+### Removed Mesh Game Object
 
-- `Mesh` and `Plane` have been removed. These were limited 3D implementations; proper 3D support is planned for the future.
+We have removed the ability for Phaser v4 to load Wavefront OBJ files and render them via the very limited Mesh Game Object. Proper 3D support is planned for the future. As a result, the following has been removed:
+
+- The `Mesh` Game Object.
+- The `Plane` Game Object.
+- The `OBJ` File Type Loader.
+- All Mesh related geometry files, previously in the `geom/mesh` folder, including: `Face`, `GenerateGridVerts`, `GenerateObjVerts`, `ParseObj`, `ParseObjMaterial`, `RotateFace` and `Vertex`.
+- The `obj` global BaseCache entry.
 
 ### Removed Plugins, Entry Points and Polyfills
 
@@ -645,17 +653,18 @@ All enhancements from late Phaser v3 development have been merged into v4. This 
 
 ### Physics
 
-- Fix Arcade Physics group collisions, `nearest` and `furthest`, and static group refresh. Thanks samme!
-- `ArcadePhysics#closest()` and `#furthest()` are properly defined (thanks @samme).
+- Fix Arcade Physics group collisions, `nearest` and `furthest`, and static group refresh (thanks @samme)
+- `ArcadePhysics#closest()` and `#furthest()` are properly defined (thanks @samme)
 - Arcade Physics OverlapCirc() and OverlapRect() error when useTree is false. Fix #7112 (thanks @samme)
 - Added missing 'this' value for Group.forEach and StaticGroup.forEach (thanks @TadejZupancic)
 - `PhysicsGroup.add` and `StaticPhysicsGroup.add` will now check to see if the incoming child already has a body of the wrong type, and if so, will destroy it so the new correct type can be assigned.
+- Fix `MatterTileBody` scope issue that caused a crash when processing flipped tiles because Body.scale() was called with null (thanks @cyphercodes)
 
 ### Tilemap Fixes
 
 - Fix boundary errors on the Y axis in `TilemapGPULayer` shader, introduced after switching to GL standard texture orientation.
-- `TilemapGPULayer` now respects camera translation. Thanks @aroman!
-- `TilemapGPULayer` now takes the first tileset if it receives an array of tilesets (which is valid for Tilemaps but not for TilemapGPULayer). Thanks to ChrisCPI for the fix.
+- `TilemapGPULayer` now respects camera translation (thanks @aroman)
+- `TilemapGPULayer` now takes the first tileset if it receives an array of tilesets, which is valid for Tilemaps but not for TilemapGPULayer (thanks @ChrisCPI)
 - Fix `createFromTiles` to handle multiple tilesets when using sprite sheets. Fix #7122 (thanks @vikerman)
 
 ### DynamicTexture and RenderTexture Fixes
@@ -670,7 +679,7 @@ All enhancements from late Phaser v3 development have been merged into v4. This 
 ### Game Object Fixes
 
 - Fix `Grid` using old methods. It was supposed to use 'stroke' just like other `Shape` objects, not a unique 'outline'.
-- `Grid` shape now sets stroke correctly from optional initialization parameters, at 1px wide. (Use `Grid#setStrokeStyle()` to customize it further.) Thanks @Grimshad!
+- `Grid` shape now sets stroke correctly from optional initialization parameters, at 1px wide. Use `Grid#setStrokeStyle()` to customize it further (thanks @Grimshad)
 - Fix Layer's use of RenderSteps.
 - Throw an error if `DOMElement` has no container.
 - Fix `TileSprite` applying `smoothPixelArt` game option incorrectly.
@@ -683,8 +692,10 @@ All enhancements from late Phaser v3 development have been merged into v4. This 
   - This fixes an issue where increasing text resolution increased text size.
 - Allow `TextureSource#setFlipY` to affect all textures (except compressed textures, which have fixed orientation).
 - Fail gracefully when a texture isn't created in `addBase64()`.
-- Fix texture offsets in `ParseXMLBitmapFont`. Thanks to @leemanhopeter.
+- Fix texture offsets in `ParseXMLBitmapFont` (thanks @leemanhopeter)
 - Fix `TextureManager.addUint8Array` method, which got premultiplied alpha wrong and flipY wrong.
+- Fix `Textures.Parsers.AtlasXML` passing trimmed and untrimmed dimensions in the wrong order to setTrim(), causing frame.realWidth to return the trimmed size instead of the original size. This made setOrigin() compute incorrect pivots for any non-default origin. Fix #7245 (thanks @cmnemoi)
+- Fix `Texture#getFrameBounds` no longer includes the last frame (`__BASE`), as it caused an incorrect calculation of the bounds (always `{x:0, y:0, w: textureWidth, h: textureHight}`) (thanks @jjcapellan)
 
 ### SpriteGPULayer Fixes
 
@@ -718,6 +729,7 @@ All enhancements from late Phaser v3 development have been merged into v4. This 
 - Add `@return` tag to `FilterList#addBlend` (thanks @phasereditor2d!).
 - Add typedefs for the `{ internal, external }` structure of `Camera#filters` (and `GameObject#filters`).
 - Fix `FilterList#addMask` docs.
+- Fix `Scenes.Systems#destroy` not removing the `cameras` plugin correctly.
 
 ---
 

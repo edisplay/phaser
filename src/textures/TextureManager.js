@@ -763,12 +763,20 @@ var TextureManager = new Class({
     /**
      * Adds a Texture Atlas to this Texture Manager.
      *
-     * In Phaser terminology, a Texture Atlas is a combination of an atlas image and a JSON data file,
-     * such as those exported by applications like Texture Packer.
+     * In Phaser terminology, a Texture Atlas is a combination of an atlas image and a data file
+     * describing the frames within it, such as those exported by applications like Texture Packer.
      *
-     * It can accept either JSON Array or JSON Hash formats, as exported by Texture Packer and similar software.
+     * This method accepts three different atlas data formats:
      *
-     * As of Phaser 3.60 you can use this method to add an atlas data set to an existing Phaser Texture.
+     * - **JSON Array** — the `frames` or `textures` field is an Array. Used by Texture Packer's
+     *   "JSON Array" and "Phaser (multi-atlas)" exports. Dispatched to `addAtlasJSONArray`.
+     * - **JSON Hash** — the `frames` field is an Object. Used by Texture Packer's "JSON Hash" export.
+     *   Dispatched to `addAtlasJSONHash`.
+     * - **Phaser Compact Texture (PCT)** — a decoded PCT data object with a `pages` array. This is
+     *   the compact line-oriented format loaded by `LoaderPlugin#pct`. Dispatched to `addAtlasPCT`.
+     *
+     * The format is detected automatically from the shape of the `data` argument. As of Phaser 3.60
+     * you can use this method to add an atlas data set to an existing Phaser Texture.
      *
      * @method Phaser.Textures.TextureManager#addAtlas
      * @since 3.0.0
@@ -782,6 +790,12 @@ var TextureManager = new Class({
      */
     addAtlas: function (key, source, data, dataSource)
     {
+        //  Phaser Compact Texture Atlas format?
+        if (data && !Array.isArray(data) && Array.isArray(data.pages) && data.frames && !Array.isArray(data.frames))
+        {
+            return this.addAtlasPCT(key, source, data, dataSource);
+        }
+
         //  New Texture Packer format?
         if (Array.isArray(data.textures) || Array.isArray(data.frames))
         {
@@ -912,6 +926,60 @@ var TextureManager = new Class({
             {
                 Parser.JSONHash(texture, 0, data);
             }
+
+            if (dataSource)
+            {
+                texture.setDataSource(dataSource);
+            }
+
+            this.emit(Events.ADD, key, texture);
+            this.emit(Events.ADD_KEY + key, texture);
+        }
+
+        return texture;
+    },
+
+    /**
+     * Adds a Phaser Compact Texture Atlas (PCT) to this Texture Manager.
+     *
+     * PCT is a compact line-oriented atlas format. A single PCT file can describe multiple atlas
+     * pages, each referencing a separate texture image. The `data` argument must be a decoded PCT
+     * structure as produced by `Phaser.Textures.Parsers.PCT.decode` — that is, an object containing
+     * `pages`, `folders`, and `frames` fields. The `source` argument should be a single Image or an
+     * Array of Images, one per page, in the same order as the `pages` field on the decoded data.
+     *
+     * You do not normally need to call this method directly. It is called automatically when the
+     * `LoaderPlugin#pct` method finishes loading a PCT file. You can also use this method to add a
+     * decoded PCT data set to an existing Phaser Texture.
+     *
+     * @method Phaser.Textures.TextureManager#addAtlasPCT
+     * @fires Phaser.Textures.Events#ADD
+     * @since 4.0.0
+     *
+     * @param {string} key - The unique string-based key of the Texture.
+     * @param {(HTMLImageElement|HTMLImageElement[]|Phaser.Textures.Texture)} source - The source Image element(s) — one per PCT page — or an existing Phaser Texture.
+     * @param {object} data - The decoded PCT data object.
+     * @param {HTMLImageElement|HTMLCanvasElement|HTMLImageElement[]|HTMLCanvasElement[]} [dataSource] - An optional data Image element (normal map source).
+     *
+     * @return {?Phaser.Textures.Texture} The Texture that was created, or `null` if the key is already in use.
+     */
+    addAtlasPCT: function (key, source, data, dataSource)
+    {
+        var texture = null;
+
+        if (source instanceof Texture)
+        {
+            key = source.key;
+            texture = source;
+        }
+        else if (this.checkKey(key))
+        {
+            texture = this.create(key, source);
+        }
+
+        if (texture)
+        {
+            Parser.PCT(texture, data);
 
             if (dataSource)
             {

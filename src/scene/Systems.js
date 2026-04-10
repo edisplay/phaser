@@ -811,7 +811,7 @@ var Systems = new Class({
 
         events.removeAllListeners();
 
-        var props = [ 'scene', 'game', 'anims', 'cache', 'plugins', 'registry', 'sound', 'textures', 'add', 'camera', 'displayList', 'events', 'make', 'scenePlugin', 'updateList' ];
+        var props = [ 'scene', 'game', 'anims', 'cache', 'plugins', 'registry', 'sound', 'textures', 'add', 'cameras', 'displayList', 'events', 'make', 'scenePlugin', 'updateList' ];
 
         for (var i = 0; i < props.length; i++)
         {

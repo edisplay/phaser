@@ -30,6 +30,7 @@ module.exports = {
     MultiAtlasFile: require('./MultiAtlasFile'),
     MultiScriptFile: require('./MultiScriptFile'),
     PackFile: require('./PackFile'),
+    PCTAtlasFile: require('./PCTAtlasFile'),
     PluginFile: require('./PluginFile'),
     SceneFile: require('./SceneFile'),
     ScenePluginFile: require('./ScenePluginFile'),
