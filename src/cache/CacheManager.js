@@ -197,7 +197,6 @@ var CacheManager = new Class({
     destroy: function ()
     {
         var keys = [
-            'atlas',
             'binary',
             'bitmapFont',
             'json',
@@ -207,9 +206,9 @@ var CacheManager = new Class({
             'video',
             'text',
             'html',
-            'obj',
             'tilemap',
-            'xml'
+            'xml',
+            'atlas'
         ];
 
         for (var i = 0; i < keys.length; i++)
