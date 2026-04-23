@@ -6,6 +6,7 @@
 
 - `RenderConfig#mipmapRegeneration` option allows certain framebuffer-based objects to use mipmaps if the game is configured to use mipmaps. This has a cost because mipmaps must be recreated after every change. Currently it only applies to DynamicTextures; Filters cannot render mipmaps. Thanks @Flow!
 - `Layer` is now a true `GameObject`. This fixes numerous small inconsistencies, and some big issues such as Filters not working. Thanks @rexrainbow for reporting the initial issue!
+- The base filter `Controller` now has `getPaddingCeil()`, which returns the ceiling of the current padding. This is mostly used internally to avoid quality loss from fractional padding. If your code calls `getPadding()` on a filter controller (typically in a custom render node), you should replace it with `getPaddingCeil()`.
 
 ### Fixes
 
